@@ -1,0 +1,189 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tab.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../disa-table/disa-table.html">
+<link rel="import" href="../disa-edit/disa-edit.html">
+<link rel="import" href="../disa-admin/disa-admin.html">
+
+<dom-module id="disa-app">
+  <template>
+    <style>
+      :host, html {
+        display: block;
+        color: #fff;
+      }
+
+      app-toolbar {
+        background-color: #00523b;
+      }
+
+      app-toolbar a {
+        margin: auto 0.3rem;        
+      }
+
+      .link {
+        @apply --layout-horizontal;
+        @apply --layout-center-center;
+        color: #fff;
+        text-decoration: none;
+      }
+
+      main {
+        color: #000;
+        margin: 0 auto;
+        width: 90%;
+        min-width: 300px;
+      }
+
+      section h1 {
+        margin-bottom: 0;
+        font-size: 2.5rem;
+        font-weight: 500;
+      }
+
+      section p {
+        margin: 0.2rem 0;
+      }
+
+      main #edit-container {
+        margin: 0 auto;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      main #dashboard:not([active]) {
+        display: none;
+      }
+
+      main #admin {
+        display: none;
+      }
+
+      main #admin[active] {
+        display: block;
+      }
+
+      #new {
+        padding-top: 0.5rem;
+      }
+
+      #new paper-button {
+        background-color: #00523b;
+        color: #fff;
+      }
+
+      #new paper-button a, [main-title] a {
+        text-decoration: none;
+        color: #fff;
+      }
+      
+    </style>
+
+    <app-location route="{{route}}" use-hash-as-path></app-location>
+    <app-route
+        route="{{route}}"
+        pattern="/dashboard"
+        active="{{tableActive}}">
+    </app-route>
+    <app-route
+        route="{{route}}"
+        pattern="/edit/:id"
+        data="{{editData}}"
+        active="{{editActive}}">
+    </app-route>
+    <app-route
+        route="{{route}}"
+        pattern="/admin"
+        active="{{adminActive}}">
+    </app-route>
+
+    <iron-ajax
+      id="draft"
+      auto
+      url="http://cole-mint/entries/draft"
+      handle-as="json"
+      last-response="{{draftEntries}}"
+      debounce-duration="300">
+    </iron-ajax>
+
+    <iron-ajax
+      id="internal"
+      auto
+      url="http://cole-mint/entries/internal"
+      handle-as="json"
+      params="{{reloadValue}}"
+      last-response="{{internalEntries}}"
+      debounce-duration="300">
+    </iron-ajax>
+
+    <iron-ajax
+      id="public"
+      auto
+      url="http://cole-mint/entries/public"
+      handle-as="json"
+      params="{{reloadValue}}"
+      last-response="{{publicEntries}}"
+      debounce-duration="300">
+    </iron-ajax>
+
+    <iron-ajax
+      auto
+      url="http://cole-mint/options"
+      handle-as="json"
+      last-response="{{optionsArray}}"
+      debounce-duration="0">
+    </iron-ajax>
+
+    <app-header>
+      <app-toolbar>
+        <div main-title><a href="#/">Database of Indigenous Slavery in the Americas</a></div>
+        <paper-tabs selected="0" no-bar>
+          <paper-tab link>
+            <a href="#/" class="link" tabindex="-1">Dashboard</a>
+          </paper-tab>
+          <paper-tab link>
+            <a href="#/admin" class="link" tabindex="-1">Admin</a>
+          </paper-tab>
+        </paper-tabs>
+      </app-toolbar>
+    </app-header>
+
+    <main>
+      <article id="dashboard" active$="{{tableActive}}">
+        <section id="name-container">
+          <h1>Hello Cole</h1>
+          <p>This is your dashboard. Click on a row to edit the entry.</p>
+        </section>
+        <section id="new">
+          <paper-button id="newBtn" raised><a href="#/edit/new">New Person</a></paper-button>
+        </section>
+        <section id="table-container">
+          <disa-table entries="{{draftEntries}}" unsorted-entries={{unsortedDraftEntries}} title="Draft Entries"></disa-table>
+          <disa-table entries="[[internalEntries]]" unsorted-entries={{unsortedInternalEntries}} title="Internal Entries"></disa-table>
+          <disa-table entries="[[publicEntries]]" unsorted-entries={{unsortedPublicEntries}} title="Public Entries"></disa-table>
+        </section>
+      </article>
+      <article id="edit">
+        <disa-edit entry-id="{{editData.id}}" active$="{{editActive}}" options="{{options}}"></disa-edit>
+      </article>
+      <article id="admin" active$="{{adminActive}}">
+        <section id="name-container">
+          <h1>Hello Cole</h1>
+          <p>This is the admin page. Use your power responsibily.</p>
+        </section>
+        <section id="admin-container">
+          <disa-admin options="{{options}}"></disa-admin>
+        </section>
+      </article>
+    </main>
+    
+  </template>
+
+  <script src="disa-app.js"></script>
+</dom-module>

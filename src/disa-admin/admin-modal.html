@@ -1,0 +1,44 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/nebula-dialog/nebula-dialog.html"> 
+
+<dom-module id="admin-modal">
+  <template>
+    <style include="nebula-dialog-styles"></style>
+    <style>
+      #content {
+        width: 300px;
+        color: #000;
+      }
+    </style>
+    <div id="content">
+      <slot></slot>
+    </div>
+  </template>
+  <script>
+    class AdminModal extends Nebula.DialogBehavior(Polymer.Element) {
+      static get is() { return 'admin-modal' }
+
+      static get properties() {
+        return {
+          modalOptions: Object
+        }
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        
+        this.querySelector("#addOptionBtn").addEventListener('click', (e) => {
+          this.push('modalOptions', "");
+        });
+
+        this.querySelector("#saveOptionBtn").addEventListener('click', (e) => {
+          console.log(e);
+          this.dispatchEvent(new CustomEvent('save-options', {bubbles: true, composed: true, detail: {
+            options: this.modalOptions
+          }}));
+        });
+      }
+    }
+    window.customElements.define(AdminModal.is, AdminModal)
+  </script>
+</dom-module>

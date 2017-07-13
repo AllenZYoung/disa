@@ -1,0 +1,6 @@
+{
+  "name": "disa",
+  "short_name": "disa",
+  "start_url": "/",
+  "display": "standalone"
+}
