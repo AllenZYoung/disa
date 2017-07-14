@@ -20,7 +20,7 @@
       }
 
       app-toolbar {
-        background-color: #00523b;
+        background-color: #075012;
       }
 
       app-toolbar a {
@@ -82,6 +82,16 @@
         text-decoration: none;
         color: #fff;
       }
+
+      #signin:not([active]) {
+        display: none;
+      }
+
+      #signout[active] {
+        display: none;
+        text-decoration: none;
+        color: #fff;
+      }
       
     </style>
 
@@ -102,11 +112,16 @@
         pattern="/admin"
         active="{{adminActive}}">
     </app-route>
+    <app-route
+      route="{{route}}"
+      pattern="/"
+      active="{{signinActive}}">
+    </app-route>
 
     <iron-ajax
       id="draft"
-      auto
-      url="http://cole-mint/entries/draft"
+      url="http://disa.disa-api/entries/draft"
+      params='{{session}}'
       handle-as="json"
       last-response="{{draftEntries}}"
       debounce-duration="300">
@@ -115,9 +130,8 @@
     <iron-ajax
       id="internal"
       auto
-      url="http://cole-mint/entries/internal"
+      url="http://disa.disa-api/entries/internal"
       handle-as="json"
-      params="{{reloadValue}}"
       last-response="{{internalEntries}}"
       debounce-duration="300">
     </iron-ajax>
@@ -125,30 +139,62 @@
     <iron-ajax
       id="public"
       auto
-      url="http://cole-mint/entries/public"
+      url="http://disa.disa-api/entries/public"
       handle-as="json"
-      params="{{reloadValue}}"
       last-response="{{publicEntries}}"
       debounce-duration="300">
     </iron-ajax>
 
     <iron-ajax
       auto
-      url="http://cole-mint/options"
+      url="http://disa.disa-api/options"
       handle-as="json"
       last-response="{{optionsArray}}"
       debounce-duration="0">
     </iron-ajax>
 
+    <iron-ajax
+      id="users"
+      auto
+      method="GET"
+      url="http://disa.disa-api/users"
+      handle-as="json"
+      content-type="application/json"
+      last-response="{{users}}"
+      debounce-duration="500">
+    </iron-ajax>
+
     <app-header>
       <app-toolbar>
         <div main-title><a href="#/">Database of Indigenous Slavery in the Americas</a></div>
-        <paper-tabs selected="0" no-bar>
-          <paper-tab link>
-            <a href="#/" class="link" tabindex="-1">Dashboard</a>
+        <paper-tabs selected="#{{route.path}}" autoselect no-bar attr-for-selected="href">
+          <paper-tab link href="#/dashboard">
+            <a href="#/dashboard" class="link" tabindex="-1">Dashboard</a>
           </paper-tab>
-          <paper-tab link>
+          <paper-tab link href="#/admin">
             <a href="#/admin" class="link" tabindex="-1">Admin</a>
+          </paper-tab>
+          <paper-tab>
+            <aside id="signin" active$="{{signinActive}}">
+              <slot>
+              </slot>
+            </aside>
+            <aside id="signout" active$="{{signinActive}}">
+              <a href="#" class="link" onclick="signOut();">Sign out</a>
+              <script>
+                function signOut() {
+                  var auth2 = gapi.auth2.getAuthInstance();
+                  auth2.signOut().then(function () {
+                    console.log('User signed out.');
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    window.history.pushState({}, null, '/#/');
+                    window.dispatchEvent(new CustomEvent('location-changed'));
+                    window.scrollTo(0,0);
+                  });
+                }
+              </script>
+            </aside>
           </paper-tab>
         </paper-tabs>
       </app-toolbar>
@@ -157,7 +203,7 @@
     <main>
       <article id="dashboard" active$="{{tableActive}}">
         <section id="name-container">
-          <h1>Hello Cole</h1>
+          <h1>Hello [[helloName()]]</h1>
           <p>This is your dashboard. Click on a row to edit the entry.</p>
         </section>
         <section id="new">
@@ -174,11 +220,11 @@
       </article>
       <article id="admin" active$="{{adminActive}}">
         <section id="name-container">
-          <h1>Hello Cole</h1>
+          <h1>Hello [[helloName()]]</h1>
           <p>This is the admin page. Use your power responsibily.</p>
         </section>
         <section id="admin-container">
-          <disa-admin options="{{options}}"></disa-admin>
+          <disa-admin options="{{options}}" users="{{users}}"></disa-admin>
         </section>
       </article>
     </main>
@@ -186,4 +232,5 @@
   </template>
 
   <script src="disa-app.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
 </dom-module>

@@ -48,7 +48,7 @@
             <template is="dom-repeat" items="[[clonedOptions]]">
               <div class="option">
                 <paper-input value="{{item}}">
-                  <iron-icon on-click="removeOption" icon="icons:delete" slot="suffix"></iron-icon>
+                  <iron-icon on-click="removeOption" icon="icons:clear" slot="suffix"></iron-icon>
                 </paper-input>
               </div>
             </template>
@@ -90,12 +90,9 @@
       }
 
       __cloneOptions(options) {
-        console.log("cloning");
         let clone = [];
-        console.log(options.race);
         this.cloneArray(clone, options);
         this.set('clonedOptions', clone);
-        console.log(this.clonedOptions, options);
       }
 
       // __editKeyChanged(editKey) {
@@ -106,11 +103,9 @@
         if (opened) {
           this.$.dialog.open();
         } else {
-          console.log("this should never change", this.options);
           let clone = [];
           this.cloneArray(clone, this.options || []);
           this.set('clonedOptions', clone);
-          console.log(this.clonedOptions, this.options);
           this.dispatchEvent(new CustomEvent('cancel-options', {bubbles: true, composed: true, detail: {
             
           }}));
@@ -124,11 +119,9 @@
         
         this.$.addOptionBtn.addEventListener('click', (e) => {
           this.push('clonedOptions', "");
-          console.log(this.options);
         });
 
         this.$.saveOptionBtn.addEventListener('click', (e) => {
-          console.log("modalOps", this.options);
           this.dispatchEvent(new CustomEvent('save-options', {bubbles: true, composed: true, detail: {
             options: this.clonedOptions
           }}));
@@ -137,7 +130,6 @@
       }
 
       removeOption(e) {
-        console.log(e);
         let text = e.path[4].innerText;
         let newOptions = [];
         this.cloneArray(newOptions, this.clonedOptions);

@@ -25,7 +25,25 @@ class DisaTable extends Polymer.Element {
 
   docDateSortFunc(e) {
     this.set('entries', this.entries.slice().sort((l,r) => {
-      return (l.document.date.year > r.document.date.year ? this.docDateSortDir : -this.docDateSortDir);
+      if (l.document.date.year > r.document.date.year) {
+        return this.docDateSortDir;
+       } else if (l.document.date.year < r.document.date.year) {
+        return -this.docDateSortDir;
+       } else {
+         if (l.document.date.month > r.document.date.month) {
+          return this.docDateSortDir;
+        } else if (l.document.date.month < r.document.date.month) {
+          return -this.docDateSortDir;
+        } else {
+          if (l.document.date.day > r.document.date.day) {
+            return this.docDateSortDir;
+          } else if (l.document.date.day < r.document.date.day) {
+            return -this.docDateSortDir;
+          } else {
+            return 0;
+          }
+        }
+       }
     }));
     switch (this.docDateSortDir) {
       case 1:

@@ -47,7 +47,7 @@ class DisaEdit extends Polymer.Element {
       bubbles: true,
       composed: true
     }));
-    window.history.pushState({}, null, '/#/');
+    window.history.pushState({}, null, '/#/dashboard');
     window.dispatchEvent(new CustomEvent('location-changed'));
     window.scrollTo(0,0);
   }
@@ -163,13 +163,14 @@ class DisaEdit extends Polymer.Element {
       body.meta.lastModified = new Date();
       body.meta.updatedBy = this.userId;
       body.meta.stage = self.newStage;
+      body.meta.creator = body.meta.creator || localStorage.getItem("id");
       if (self.entryId != 'new') {
         body._id = self.entryId;
       }
       self.setProperties({
         body: body,
         method: self.entryId == 'new' ? 'POST' : 'PUT',
-        url: `http://cole-mint/entries`
+        url: `http://disa.disa-api/entries`
       });
       // reset the id to clear out the two-way data binding on the names
       // self.set('entryId', undefined);
@@ -186,7 +187,7 @@ class DisaEdit extends Polymer.Element {
       this.set('entry', {});
       return '';
     }
-    return `http://cole-mint/entries/${entryId}`;
+    return `http://disa.disa-api/entries/${entryId}`;
   }
 
   __header(entryId, entry) {
@@ -212,7 +213,39 @@ class DisaEdit extends Polymer.Element {
   }
 
   indexOf(item, list) {
-    return list && list.indexOf(item);
+    let strItem = this.monthToString(item);
+    return list && list.indexOf(strItem);
+  }
+
+  monthToString(monthNum) {
+    switch (monthNum) {
+      case 1:
+        return "January"
+      case 2:
+        return "Feburary";
+      case 3:
+        return "March";
+      case 4:
+        return "April";
+      case 5:
+        return "May";
+      case 6:
+        return "June";
+      case 7:
+        return "July";
+      case 8:
+        return "August";
+      case 9:
+        return "September";
+      case 10:
+        return "October";
+      case 11:
+        return "November";
+      case 12:
+        return "December";
+      default:
+        return null;
+    }
   }
 
 }
@@ -331,9 +364,9 @@ class ChildrenNames {
 
 class TriplePartDate {
   constructor(year, month, day) {
-    this.year = year;
-    
-    this.day = day;
+    this.year = Number.parseInt(year) || '';
+    this.month = (new Date(`1 ${month} 9999`).getMonth() + 1) || '';
+    this.day = Number.parseInt(day) || '';
     return this;
   }
 }

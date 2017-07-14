@@ -11,6 +11,7 @@ class DisaAdmin extends Polymer.Element {
       opened: Boolean,
       options: Object,
       editKey: Object,
+      users: Array
       // editOptions: Array
     };
   }
@@ -28,6 +29,39 @@ class DisaAdmin extends Polymer.Element {
     return clone;
   }
 
+  addUser() {
+    let self = this;
+    let email = this.$.email.value;
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://disa.disa-api/users');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function() {
+      let response = JSON.parse(xhr.responseText);
+      console.log(response);
+      // localStorage.setItem("givenName", response.givenName);
+      // localStorage.setItem("name", response.name);
+      // localStorage.setItem("status", response.status);
+      // localStorage.setItem("id", response.id);
+      // sessionStorage.setItem('jsession', response.session);
+
+      // window.history.pushState({}, null, '/#/');
+      // window.dispatchEvent(new CustomEvent('location-changed'));
+      // window.history.pushState({}, null, '/#/dashboard');
+      // window.dispatchEvent(new CustomEvent('location-changed'));
+      // window.scrollTo(0,0);
+      if (response.status == 201) {
+        self.push('users', {
+          email: email
+        });
+        self.$.email.value = "";
+      }
+    }
+    xhr.send(JSON.stringify({
+      "email": email,
+      "role": "User"
+    }));
+  }
+
   connectedCallback() {
     super.connectedCallback();
 
@@ -42,12 +76,16 @@ class DisaAdmin extends Polymer.Element {
       let newSubOptions = [];
 
       this.cloneArray(newSubOptions, e.detail.options);
-      let newFullOptions = [];
+      let newFullOptions = {};
       this.cloneFunc(newFullOptions, this.options);
       newFullOptions[this.editKey] = newSubOptions;
       this.set('options', newFullOptions);
-      console.log(this.options);
       this.set('editOptions', this.options[this.editKey]);
+      this.setProperties({
+        body: this.options,
+        method: 'PUT',
+        url: `http://disa.disa-api/options`
+      });
     });
 
     this.addEventListener('cancel-options', (e) => {
@@ -60,7 +98,6 @@ class DisaAdmin extends Polymer.Element {
 
   __optionsChanged(options) {
     this.set('raceOptions', options.race);
-    console.log(this.raceOptions, options.race);
   }
 
   getOptions(options, key) {

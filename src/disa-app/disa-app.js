@@ -27,16 +27,16 @@ class DisaApp extends Polymer.Element {
         type: Object
       },
       optionsArray: Object,
-      reloadValue: {
-        type: Object,
-        value: {"reload":1}
-      },
       unsortedDraftEntries: Array,
       __draftEntriesLoaded: Boolean,
       unsortedInternalEntries: Array,
       __internalEntriesLoaded: Boolean,
       unsortedPublicEntries: Array,
-      __publicEntriesLoaded: Boolean
+      __publicEntriesLoaded: Boolean,
+      session: {
+        type: String,
+        default: "inital"
+      }
     };
   }
 
@@ -50,6 +50,10 @@ class DisaApp extends Polymer.Element {
     ]
   }
 
+  helloName() {
+    return localStorage.getItem("givenName");
+  }
+
   optionsDeArray(arr) {
     if (!this.options) {
       this.set('options', arr[0]);
@@ -61,16 +65,15 @@ class DisaApp extends Polymer.Element {
   connectedCallback() {
     super.connectedCallback();
 
-    // if the path is undefined or empty, then the user is
-    // trying to access '/'. Redirect them to the dashboard.
-    if (!this.route.path) {
-      this.set('route.path', '/dashboard')
-    }
-
     this.addEventListener('reload-needed', (e) => {
+      console.log("reloading");
       this.__draftEntriesLoaded = false;
       this.__internalEntriesLoaded = false;
       this.__publicEntriesLoaded = false;
+      this.set('session', {
+        "session" : sessionStorage.getItem('jsession'),
+        "id": localStorage.getItem("id")
+      });
       this.$.draft.generateRequest();
       this.$.internal.generateRequest();
       this.$.public.generateRequest();
@@ -78,10 +81,30 @@ class DisaApp extends Polymer.Element {
   }
 
   locationChanged(route) {
-    // root path redirects to dashboard
-    if (this.route.path == '/') {
-      this.set('route.path', '/dashboard')
+    console.log(route);
+    console.log(this.route.path);
+
+    // initial load
+    if (route == "") {
+      this.set('route.path', "/");
+      return;
+    } else {
+      if (route == "/") {
+        if (sessionStorage.getItem("jsession")) {
+          this.set('route.path', "/dashboard");
+        }
+      }
+      // get the correct user's drafts
+      if (this.route.path == '/dashboard') {
+        this.dispatchEvent(new CustomEvent("reload-needed", {
+          bubbles: true,
+          composed: true
+        }));
+      }
     }
+
+    
+    // check
 
     // console.log('here');
     // // we need to first make sure that the entries have loaded
@@ -96,10 +119,28 @@ class DisaApp extends Polymer.Element {
   }
 
   draftEntriesLoaded(entries) {
-    if (!this.__draftEntriesLoaded) {
-      this.set('unsortedDraftEntries', this.draftEntries);
+    console.log("drafting");
+    if (!entries) {
+      console.log("intial load");
+      return;
     }
-    this.__draftEntriesLoaded = true;
+    if (entries instanceof Array) {
+      if (!this.__draftEntriesLoaded) {
+        this.set('unsortedDraftEntries', this.draftEntries);
+      }
+      this.__draftEntriesLoaded = true;
+    } else {
+      if (entries.refresh) {
+        alert("Please re-signin");
+        localStorage.clear();
+        sessionStorage.clear();
+        window.history.pushState({}, null, '/#/');
+        window.dispatchEvent(new CustomEvent('location-changed'));
+        window.scrollTo(0,0);
+      } else {
+        console.log(entries.error);
+      }
+    }
   }
 
   internalEntriesLoaded(entries) {
@@ -118,3 +159,39 @@ class DisaApp extends Polymer.Element {
 }
 
 window.customElements.define(DisaApp.is, DisaApp);
+
+
+function onSignIn(googleUser) {
+  console.log("signed in");
+  var id_token = googleUser.getAuthResponse().id_token;
+  // haven't already logged in
+  if (!sessionStorage.getItem("jsession")) {
+    console.log("calling new token");
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://disa.disa-api/newtoken');
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+      console.log("nt response");
+      let response = JSON.parse(xhr.responseText);
+      // console.log(response);
+      localStorage.setItem("givenName", response.givenName);
+      localStorage.setItem("name", response.name);
+      localStorage.setItem("status", response.status);
+      localStorage.setItem("id", response.id);
+      sessionStorage.setItem('jsession', response.session);
+
+      window.history.pushState({}, null, '/#/');
+      window.dispatchEvent(new CustomEvent('location-changed'));
+      window.history.pushState({}, null, '/#/dashboard');
+      window.dispatchEvent(new CustomEvent('location-changed'));
+      window.scrollTo(0,0);
+    }
+    xhr.send('idtoken=' + id_token);
+  } else {
+    window.history.pushState({}, null, '/#/');
+    window.dispatchEvent(new CustomEvent('location-changed'));
+    window.history.pushState({}, null, '/#/dashboard');
+    window.dispatchEvent(new CustomEvent('location-changed'));
+    window.scrollTo(0,0);
+  }
+}
