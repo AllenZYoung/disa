@@ -33,7 +33,7 @@ class DisaAdmin extends Polymer.Element {
     let self = this;
     let email = this.$.email.value;
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://disa.disa-api/users');
+    xhr.open('POST', 'http://disa-api/users');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function() {
       let response = JSON.parse(xhr.responseText);
@@ -84,7 +84,7 @@ class DisaAdmin extends Polymer.Element {
       this.setProperties({
         body: this.options,
         method: 'PUT',
-        url: `http://disa.disa-api/options`
+        url: `http://disa-api/options`
       });
     });
 
