@@ -54,10 +54,12 @@ class DisaEdit extends Polymer.Element {
 
   __saveResponse(saveResponse) {
     this.$.spinnerContainer.style.display = "none";
+    this.$.saveSpinner.active = false;
+    this.$.saveSpinner.hidden = true;
+    this.$.form.disabled = false;
     if (saveResponse && (saveResponse.status == 200 || saveResponse.status == 201)) {
-      this.$.saveSpinner.active = false;
-      this.$.saveSpinner.hidden = true;
-      this.$.form.disabled = false;
+      this.$.form.reset();
+      this.set('entryId', undefined);
       this.returnToDashboard();
     } else {
       alert("There was an error. Please try again.");

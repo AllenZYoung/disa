@@ -52,8 +52,10 @@ class DisaApp extends Polymer.Element {
 
   optionsDeArray(arr) {
     if (!this.options) {
-      this.options = arr[0];
+      this.set('options', arr[0]);
     }
+    // console.log(arr[0]);
+    // return arr[0];
   }
 
   connectedCallback() {

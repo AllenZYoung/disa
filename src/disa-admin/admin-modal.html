@@ -1,42 +1,148 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/nebula-dialog/nebula-dialog.html"> 
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 
 <dom-module id="admin-modal">
   <template>
-    <style include="nebula-dialog-styles"></style>
     <style>
       #content {
-        width: 300px;
+        width: 25%;
+        min-width: 300px;
         color: #000;
+        max-height: calc(100vh - 10%);
+        overflow-y: auto;
+      }
+
+      #dialog {
+        height: auto;
+        max-height: calc(100% - 30px) !important;
+        overflow: auto;
+      }
+
+      paper-dialog {
+        top: -10px;
+      }
+
+      .header {
+        font-size: 1.3rem;
+        font-weight: 500;
+        padding-bottom: 10px;
+      }
+
+      admin-modal div {
+        background-color: #fff;
+        color: #000;
+        width: 100%;
       }
     </style>
+    
     <div id="content">
-      <slot></slot>
+      <paper-dialog id="dialog" opened="{{opened}}">
+        <div style="margin-top:0;"></div>
+        <section>
+          <div class="header" style="width: 100%; text-align: center; margin: 0 auto;text-transform: capitalize;">
+            {{editKey}} Options
+          </div>
+          <div class="card-content">
+            <template is="dom-repeat" items="[[clonedOptions]]">
+              <div class="option">
+                <paper-input value="{{item}}">
+                  <iron-icon on-click="removeOption" icon="icons:delete" slot="suffix"></iron-icon>
+                </paper-input>
+              </div>
+            </template>
+          </div>
+          <paper-button class="horizontal" id="addOptionBtn">Add Option</paper-button>
+          <paper-button class="horizontal" id="saveOptionBtn">Save</paper-button>
+          <paper-button class="horizontal" dialog-dismiss id="cancelOptionBtn">Cancel</paper-button>
+        </section>
+        <div style="margin-bottom:-15px;"></div>
+      </paper-dialog>
     </div>
   </template>
   <script>
-    class AdminModal extends Nebula.DialogBehavior(Polymer.Element) {
+    class AdminModal extends Polymer.Element {
       static get is() { return 'admin-modal' }
 
       static get properties() {
         return {
-          modalOptions: Object
+          editKey: String,
+          opened: Boolean,
+          options: Array,
+          clonedOptions: Array
+        }
+      }
+
+      cloneArray(newArray, oldArray) {
+        for (let i = 0; i < oldArray.length; ++i) {
+          newArray[i] = oldArray[i];
+        }
+      }
+
+      static get observers() {
+        return [
+          '__openStateChanged(opened)',
+          '__cloneOptions(options)'
+          // ,
+          // '__editKeyChanged(editKey)'
+        ]
+      }
+
+      __cloneOptions(options) {
+        console.log("cloning");
+        let clone = [];
+        console.log(options.race);
+        this.cloneArray(clone, options);
+        this.set('clonedOptions', clone);
+        console.log(this.clonedOptions, options);
+      }
+
+      // __editKeyChanged(editKey) {
+      //   this.set('modalOptions', this.options[editKey]);
+      // }
+
+      __openStateChanged(opened) {
+        if (opened) {
+          this.$.dialog.open();
+        } else {
+          console.log("this should never change", this.options);
+          let clone = [];
+          this.cloneArray(clone, this.options || []);
+          this.set('clonedOptions', clone);
+          console.log(this.clonedOptions, this.options);
+          this.dispatchEvent(new CustomEvent('cancel-options', {bubbles: true, composed: true, detail: {
+            
+          }}));
         }
       }
 
       connectedCallback() {
         super.connectedCallback();
+
+        // this.editOptions = this.options && this.options[this.editKey] || [];
         
-        this.querySelector("#addOptionBtn").addEventListener('click', (e) => {
-          this.push('modalOptions', "");
+        this.$.addOptionBtn.addEventListener('click', (e) => {
+          this.push('clonedOptions', "");
+          console.log(this.options);
         });
 
-        this.querySelector("#saveOptionBtn").addEventListener('click', (e) => {
-          console.log(e);
+        this.$.saveOptionBtn.addEventListener('click', (e) => {
+          console.log("modalOps", this.options);
           this.dispatchEvent(new CustomEvent('save-options', {bubbles: true, composed: true, detail: {
-            options: this.modalOptions
+            options: this.clonedOptions
           }}));
         });
+        window.w = this;
+      }
+
+      removeOption(e) {
+        console.log(e);
+        let text = e.path[4].innerText;
+        let newOptions = [];
+        this.cloneArray(newOptions, this.clonedOptions);
+        newOptions.splice(newOptions.indexOf(text), 1);
+        this.set('clonedOptions', newOptions);
       }
     }
     window.customElements.define(AdminModal.is, AdminModal)
