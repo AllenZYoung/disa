@@ -16,6 +16,7 @@
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 
 <link rel="import" href="person-edit.html">
+<link rel="import" href="owner-edit.html">
 
 <script src="../entry/index.js"></script>
 
@@ -97,7 +98,7 @@
 
         <person-edit id="person" person="[[entry.person]]" options="[[options]]"></person-edit>
 
-        <!-- <owner-edit owner="[[entry.owner]]"></owner-edit> -->
+        <owner-edit id="owner" owner="[[entry.owner]]" options="[[options]]"></owner-edit> 
 
         <div id="actions">
           <div id="spinnerContainer" style="width: 28px; height: 28px; margin: 0 auto; padding-bottom:10px; display:none;">

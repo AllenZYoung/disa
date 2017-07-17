@@ -101,7 +101,7 @@
     </paper-dropdown-menu>
     <input name="sex" type="hidden" value$="{{sex.value}}" />
 
-    <paper-input name="age" label="Age" value="[[entry.age]]"></paper-input>
+    <paper-input name="age" label="Age" value="[[person.age]]"></paper-input>
 
     <paper-dropdown-menu label="Vocation" selected-item="{{vocation}}" selected-item-label="{{selectedVocation}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.vocation, 'vocation', options)]]">

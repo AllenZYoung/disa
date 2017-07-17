@@ -108,8 +108,10 @@ class DisaEdit extends Polymer.Element {
     let formData = form.request.params;
 
     let person = this.$.person.createFromData(formData);
-
     body.person = person;
+
+    let owner = this.$.owner.createFromData(formData);
+    body.owner = owner;
 
     // body.meta = self.entry && self.entry.meta || {};
     let meta = new Meta();

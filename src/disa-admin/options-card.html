@@ -5,11 +5,15 @@
 <dom-module id="options-card">
   <template>
     <style>
+      paper-card {
+        @apply --options-card-margin;
+      }
+      
       paper-button {
         background-color: var(--header-background-color);
       }
 
-       paper-button {
+      paper-button {
         @apply --edit-options-button-text;
       }
 
