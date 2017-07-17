@@ -53,7 +53,7 @@
           </template>
         </paper-listbox>
       </paper-dropdown-menu>
-      <input name="nameType[]" type="hidden" value$="[[type.value]]" />
+      <input name="nameType[]" type="hidden" value$="[[nameType.value]]" />
 
       <paper-button on-click="removeName" data-property="names" data-index="[[index]]" raised>Remove Name</paper-button>
     </template>
@@ -91,14 +91,15 @@
     <input name="race" type="hidden" value$="[[race.value]]" />
     <br>
 
-    <paper-dropdown-menu label="Sex" selected-item="{{sex}}" selected-item-label="{{selectedSex}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.sex, 'sex', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('sex', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
+    <span>{{sex.value}} {{selectedSex}}</span>
+    <paper-dropdown-menu label="Sex" selected-item="{{sex}}" selected-item-label="{{selectedSex}}">
+      <paper-listbox slot="dropdown-content" selected="{{__indexOf(person.sex, 'sex', options)}}">
+        <template is="dom-repeat" items="{{__getOptions('sex', options)}}">
+          <paper-item value="{{item}}">[[item]]</paper-item>
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
-    <input name="sex" type="hidden" value$="[[sex.value]]" />
+    <input name="sex" type="hidden" value$="{{sex.value}}" />
 
     <paper-input name="age" label="Age" value="[[entry.age]]"></paper-input>
 

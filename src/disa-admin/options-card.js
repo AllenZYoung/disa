@@ -19,7 +19,6 @@ class OptionsCard extends Polymer.Element {
   }
 
   openModal() {
-    console.log("opening");
     this.$.modal.open();
   }
 

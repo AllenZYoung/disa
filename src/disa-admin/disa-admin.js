@@ -45,7 +45,6 @@ class DisaAdmin extends Polymer.Element {
   }
 
   __value(item) {
-    console.log("value", Utils.__value(item));
     return Utils.__value(item);
   }
 

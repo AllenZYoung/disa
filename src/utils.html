@@ -13,7 +13,6 @@
     }
 
     static __value(item) {
-      console.log("util value", Object.values(item)[0]);
       return Object.values(item)[0];
     }
 
@@ -25,7 +24,6 @@
     }
 
     static __getOptions(key, options) {
-      console.log("options", key, options);
       if (!key || !options) return [];
       for (let option of options) {
         if (Utils.__key(option) == key) {
@@ -36,7 +34,6 @@
     }
 
     static __indexOf(value, key, options) {
-      console.log(value, key, options);
       return Utils.__getOptions(key, options).indexOf(value);
     }
 

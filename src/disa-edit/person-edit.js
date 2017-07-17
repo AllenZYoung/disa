@@ -6,7 +6,8 @@ class PersonEdit extends Polymer.Element {
     return {
       person: {
         type: Object
-      }
+      },
+      sex: Object
     };
   }
 
@@ -77,6 +78,7 @@ class PersonEdit extends Polymer.Element {
     person.race = race;
 
     let sex = formData['sex'];
+    // console.log(sex, formData);
     person.sex = sex;
 
     let age = formData['age'];

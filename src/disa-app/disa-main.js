@@ -104,8 +104,7 @@ class DisaMain extends Polymer.Element {
         return;
       }
       // setup refresh mechanism
-      let refresh = window.setInterval(function () {
-        console.log("I'm being refreshed!");
+      window.refresh = window.setInterval(function () {
         googleUser.reloadAuthResponse();
         const jwt = googleUser.getAuthResponse().id_token;
         localStorage.setItem('jwt', jwt);
@@ -128,7 +127,7 @@ class DisaMain extends Polymer.Element {
 
   onSignOut() {
     this.set('signedIn', false);
-    window.clearInterval(refresh);
+    window.clearInterval(window.refresh);
     localStorage.clear();
     let auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {

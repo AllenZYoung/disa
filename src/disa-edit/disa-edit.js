@@ -26,7 +26,7 @@ class DisaEdit extends Polymer.Element {
 
   constructor() {
     super();
-    this.apiHost = "http://cole-mint";
+    window.q = this;
   }
   
   connectedCallback() {
@@ -34,7 +34,6 @@ class DisaEdit extends Polymer.Element {
 
     let self = this;
     this.$.form.addEventListener('iron-form-presubmit', function(e) {
-      console.log("presubmit");
       e.preventDefault();
       self.submitForm(this, e);
       return false;
@@ -55,9 +54,10 @@ class DisaEdit extends Polymer.Element {
   }
 
   __entryIdChanged(entryId) {
+    console.log("id changed");
     // trigger new ajax request
     if (entryId === undefined) {
-      console.log("undefined");
+      this.set('entry', new Entry());
     } else if (entryId === 'new') {
       this.set('entry', new Entry());
     } else {
@@ -66,7 +66,8 @@ class DisaEdit extends Polymer.Element {
   }
 
   __entryChanged(entry) {
-    console.log(entry);
+    console.log("entry changed");
+    // console.log(entry.person.sex);
     if (!entry) {
       alert("This is not a valid entry. If you got here from clicking on an entry on the dashboard, email Cole.");
       window.history.pushState({}, null, '/#/dashboard');
@@ -98,7 +99,6 @@ class DisaEdit extends Polymer.Element {
   }
 
   prepareForm() {
-    console.log('prepare')
     this.$.spinnerContainer.style.display = "block";
     this.$.saveSpinner.active = true;
     this.$.saveSpinner.hidden = false;
@@ -107,7 +107,6 @@ class DisaEdit extends Polymer.Element {
   }
 
   submitForm(form, e) {
-    console.log('submit');
     let body = new Entry();
     let formData = form.request.params;
 
@@ -115,7 +114,6 @@ class DisaEdit extends Polymer.Element {
 
     body.person = person;
 
-    console.log(body);
     // body.meta = self.entry && self.entry.meta || {};
     let meta = new Meta();
     meta.lastModified = new Date();
@@ -133,6 +131,10 @@ class DisaEdit extends Polymer.Element {
     } else {
       this.__stageAction === 'save' ? meta.stage = 'Draft' : meta.stage = 'Internal';
     }
+    if (this.entryId != 'new') {
+      meta.idPrefix = this.entry.meta.idPrefix;
+      meta.idSuffix = this.entry.meta.idSuffix;
+    }
     // body.meta.creator = body.meta.creator || localStorage.getItem("id");
     // if (self.entryId != 'new') {
     //   body._id = self.entryId;
@@ -144,8 +146,8 @@ class DisaEdit extends Polymer.Element {
       saveMethod: this.entryId == 'new' ? 'POST' : 'PUT',
       saveUrl: this.entryId == 'new' ? `${this.apiHost}/entries` : `${this.apiHost}/entries/${this.entryId}`
     });
-    console.log("Headers");
-    console.log(this.headers);
+
+    // this.set('entry', new Entry());
 
     this.$.saveAjax.generateRequest();
   }
@@ -158,7 +160,6 @@ class DisaEdit extends Polymer.Element {
     if (typeof saveResponse === 'undefined') {
       return;
     }
-    console.log(saveResponse);
     if (saveResponse && (saveResponse.status == 200 || saveResponse.status == 201 || saveResponse.status == 204)) {
       this.$.form.reset();
       this.set('entryId', undefined);

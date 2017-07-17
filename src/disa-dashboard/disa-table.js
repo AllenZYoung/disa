@@ -22,7 +22,6 @@ class DisaTable extends Polymer.Element {
 
   connectedCallback() {
     super.connectedCallback();
-    console.log(this.title);
   }
 
   _toLocaleString(date) {

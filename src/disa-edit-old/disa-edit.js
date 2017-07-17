@@ -286,7 +286,6 @@ class Person {
     this.ownerOfMother = formData.ownerOfMother;
     this.document = {};
     this.document.date = new TriplePartDate(formData.dateOfDocumentYear, formData.dateOfDocumentMonth, formData.dateOfDocumentDay);
-    console.log(this.document.date);
     this.document.sourceType = formData.documentSourceType;
     this.document.recordType = formData.documentRecordType;
     this.document.citation = formData.documentCitation;
