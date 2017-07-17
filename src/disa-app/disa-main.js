@@ -6,8 +6,15 @@ class DisaMain extends Polymer.Element {
     return {
       options: {
         type: Array
-      }
+      },
+      route: Object
     }
+  }
+
+  static get observers() {
+    return [
+      '__routeChanged(route)'
+    ]
   }
 
   constructor() {
@@ -15,7 +22,7 @@ class DisaMain extends Polymer.Element {
     let self = this;
     // defaults
     this.set('signedIn', Utils.isSignedIn());
-    this.set('apiHost', "http://cole-mint");
+    this.set('apiHost', "http://api.disa.forkinthecode.com");
 
     if (this.signedIn) {
       // check local storage for customization
@@ -27,6 +34,10 @@ class DisaMain extends Polymer.Element {
       this.set('headers', {
         "Authorization": `Bearer ${localStorage.getItem("jwt")}`
       });
+
+      if (window.location.hash == "" || window.location.hash == "#" || window.location.hash == "#/") {
+        this.set('route.path', '/dashboard');
+      }
     } else {
       let auth2 = gapi.auth2.getAuthInstance();
       auth2.signOut().then(function () {
@@ -87,6 +98,13 @@ class DisaMain extends Polymer.Element {
 
   connectedCallback() {
     super.connectedCallback();
+  }
+
+  __routeChanged(route) {
+    console.log(route);
+    if (this.signedIn && route && route.path == '' || route.path == '/') {
+      this.set('route.path', '/dashboard');
+    }
   }
 
   // BEGIN Auth
