@@ -1,6 +1,6 @@
 FROM colehansen/polymer
 
-WORKDIR "/usr/scr/app"
+WORKDIR "/usr/src/app"
 
 COPY . /usr/src/app
 

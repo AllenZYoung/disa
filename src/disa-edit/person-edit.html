@@ -1,0 +1,117 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+
+<dom-module id="person-edit">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      *:not(paper-button):not(paper-listbox) {
+        width: 100%;
+      }
+
+      paper-dropdown-menu {
+        --paper-dropdown-menu-button: {
+          left: 0;
+          width: 100%;
+        }
+      }
+
+      paper-listbox {
+        --paper-listbox: {
+          width: 300px;
+          overflow: hidden;
+        }
+      }
+
+      iron-dropdown {
+        left:0 !important;
+        width:100% !important;
+      }
+      
+
+    </style>
+
+    <h2>Person Detail</h2>
+
+    <h3>Name(s)</h3>
+    <template is="dom-repeat" items="[[person.names]]">
+      <paper-input name="firstName[]" label="First Name" value="{{item.firstName}}"></paper-input>
+      <paper-input name="lastName[]" label="Last Name" value="{{item.lastName}}"></paper-input>
+      <paper-dropdown-menu label="Type" selected-item="{{nameType}}" selected-item-label="{{selectedNameType}}">
+        <paper-listbox slot="dropdown-content" selected="[[__indexOf(item.type, 'nameType', options)]]">
+          <template is="dom-repeat" items="[[__getOptions('nameType', options)]]">
+            <paper-item value="[[item]]">[[item]]</paper-item>
+          </template>
+        </paper-listbox>
+      </paper-dropdown-menu>
+      <input name="nameType[]" type="hidden" value$="[[type.value]]" />
+
+      <paper-button on-click="removeName" data-property="names" data-index="[[index]]" raised>Remove Name</paper-button>
+    </template>
+    <p><paper-button raised on-click="addName">Add Name</paper-button></p>
+    <br>
+
+    <h3>Biographical</h3>
+    <paper-dropdown-menu label="Tribe" selected-item="{{tribe}}" selected-item-label="{{selectedTribe}}">
+      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.tribe, 'tribe', options)]]">
+        <template is="dom-repeat" items="[[__getOptions('tribe', options)]]">
+          <paper-item value="[[item]]">[[item]]</paper-item>
+        </template>
+      </paper-listbox>
+    </paper-dropdown-menu>
+    <input name="tribe" type="hidden" value$="[[tribe.value]]" />
+    <br>
+
+    <paper-dropdown-menu label="Origin" selected-item="{{origin}}" selected-item-label="{{selectedOrigin}}">
+      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.origin, 'origin', options)]]">
+        <template is="dom-repeat" items="[[__getOptions('origin', options)]]">
+          <paper-item value="[[item]]">[[item]]</paper-item>
+        </template>
+      </paper-listbox>
+    </paper-dropdown-menu>
+    <input name="origin" type="hidden" value$="[[origin.value]]" />
+    <br>  
+  
+    <paper-dropdown-menu label="Race" selected-item="{{race}}" selected-item-label="{{selectedRace}}">
+      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.race, 'race', options)]]">
+        <template is="dom-repeat" items="[[__getOptions('race', options)]]">
+          <paper-item value="[[item]]">[[item]]</paper-item>
+        </template>
+      </paper-listbox>
+    </paper-dropdown-menu>
+    <input name="race" type="hidden" value$="[[race.value]]" />
+    <br>
+
+    <paper-dropdown-menu label="Sex" selected-item="{{sex}}" selected-item-label="{{selectedSex}">
+      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.sex, 'sex', options)]]">
+        <template is="dom-repeat" items="[[__getOptions('sex', options)]]">
+          <paper-item value="[[item]]">[[item]]</paper-item>
+        </template>
+      </paper-listbox>
+    </paper-dropdown-menu>
+    <input name="sex" type="hidden" value$="[[sex.value]]" />
+
+    <paper-input name="age" label="Age" value="[[entry.age]]"></paper-input>
+
+    <paper-dropdown-menu label="Vocation" selected-item="{{vocation}}" selected-item-label="{{selectedVocation}}">
+      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.vocation, 'vocation', options)]]">
+        <template is="dom-repeat" items="[[__getOptions('vocation', options)]]">
+          <paper-item value="[[item]]">[[item]]</paper-item>
+        </template>
+      </paper-listbox>
+    </paper-dropdown-menu>
+    <input name="vocation" type="hidden" value$="[[vocation.value]]" />
+
+  </template>
+
+  <script src="person-edit.js"></script>
+</dom-module>

@@ -1,0 +1,48 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../utils.html">
+
+<dom-module id="options-modal">
+  <template>
+    <style>
+      paper-button {
+        background-color: var(--header-background-color);
+      }
+
+       paper-button {
+        @apply --edit-options-button-text;
+      }
+
+      .centered {
+        margin: 0 auto;
+        width: 82px;
+      }
+    </style>
+
+    <paper-dialog id="modal">
+      <h2>[[title]]</h2>
+      <paper-dialog-scrollable>
+        <template is="dom-repeat" items="[[editOptions]]">
+          <div class="option">
+            <paper-input value="{{item}}">
+              <iron-icon on-click="removeOption" data-index="[[index]]" icon="icons:clear" slot="suffix"></iron-icon>
+            </paper-input>
+          </div>
+        </template>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button on-click="addOption">Add Option</paper-button>
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-confirm>Save</paper-button>
+      </div>
+    </paper-dialog>
+    
+  </template>
+
+  <script src="options-modal.js"></script> 
+</dom-module>

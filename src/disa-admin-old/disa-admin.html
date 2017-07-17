@@ -1,0 +1,76 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="./admin-modal.html">
+<link rel="import" href="./options-card.html">
+
+<dom-module id="disa-admin">
+  <template>
+    <style>
+      admin-modal {
+        width: 100%;
+      }
+
+      .flex {
+        display: inline-flex;
+        flex-wrap: wrap;
+      }
+
+      .horizonal {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px;
+      }
+
+      options-card {
+        display: inline-block;
+        padding: 5px;
+        height: 100%;
+        width: 17%;
+        min-width: 150px;
+      }
+
+    </style>
+
+    <iron-ajax
+      id="saveAjax"
+      auto
+      method="PUT"
+      url="{{url}}"
+      body="{{body}}"
+      handle-as="json"
+      content-type="application/json"
+      last-response="{{saveResponse}}"
+      debounce-duration="500">
+    </iron-ajax>
+
+    <h2>Options Menu</h2>
+    <div class="flex">
+      <options-card options="{{options.tribe}}" title="Tribe" name="tribe"></options-card>
+      <options-card options="{{options.origin}}" title="Origin" name="origin"></options-card>
+      <options-card options="{{raceOptions}}" title="Race" name="race"></options-card>
+      <options-card options="{{options.vocation}}" title="Vocation" name="vocation"></options-card>
+      <options-card options="{{options.ownerVocation}}" title="Owner Vocation" name="ownerVocation"></options-card>
+      <options-card options="{{options.sex}}" title="Sex" name="sex"></options-card>
+      <options-card options="{{options.status}}" title="Status" name="status"></options-card>
+      <options-card options="{{options.typeKindOfEnslavement}}" title="Type/Kind of Enslavement" name="typeKindOfEnslavement"></options-card>
+    </div>
+
+    <admin-modal opened="{{opened}}" options="[[editOptions]]" edit-key="[[editKey]]"></admin-modal>
+
+    <h2>Users Menu</h2>
+    <template is="dom-repeat" items="{{users}}">
+      <paper-card>
+        <div class="card-content">
+          <span>[[item.email]]</span>
+        </div>
+      </paper-card>
+    </template>
+    
+    <paper-input id="email" name="userEmail" value="{{newUserEmail}}"></paper-input>
+    <paper-button on-click="addUser">Add User</paper-button>
+  </template>
+
+  <script src="disa-admin.js"></script>
+</dom-module>

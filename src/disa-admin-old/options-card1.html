@@ -1,0 +1,69 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/nebula-dialog/nebula-dialog.html"> 
+
+<dom-module id="options-card1">
+  <template>
+    <style>
+      paper-card {
+        width: 100%;
+        height: 100%;
+      }
+
+      .header {
+        font-size: 1.3rem;
+        font-weight: 500;
+      }
+
+      .horizontal {
+        width: 93px;
+        margin: 0 auto;
+      }
+    </style>
+    <paper-card>
+      <div class="card-content">
+        <div class="header">
+          <span>{{title}} Options</span>
+        </div>
+        <template is="dom-repeat" items="{{options}}">
+          <div class="option" style="padding: 5px 0;">
+            <span>[[item]]</span>
+          </div>
+        </template>
+      </div>
+      <div class="card-actions">
+        <div class="horizontal centered">
+          <paper-button id="openModalBtn" data-key="{{name}}" raised>Edit</paper-button>
+        </div>
+      </div>
+    </paper-card>
+  </template>
+  <script>
+    class OptionsCards1 extends Nebula.DialogBehavior(Polymer.Element) {
+      static get is() { return 'options-card1' }
+
+      static get properties() {
+        return {
+          title: String,
+          name: String,
+          options: Array
+        }
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this.shadowRoot.querySelector("#openModalBtn").addEventListener('click', (e) => {
+          e.preventDefault();
+          this.dispatchEvent(new CustomEvent('modal-opened', {
+            bubbles: true,
+            composed: true,
+            detail: {
+              key: this.shadowRoot.querySelector("#openModalBtn").dataKey
+            }
+          }));
+          return false;
+        });
+      }
+    }
+    window.customElements.define(OptionsCards1.is, OptionsCards1)
+  </script>
+</dom-module>

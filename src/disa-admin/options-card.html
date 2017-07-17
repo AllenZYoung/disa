@@ -1,69 +1,43 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/nebula-dialog/nebula-dialog.html"> 
+<link rel="import" href="options-modal.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
 
 <dom-module id="options-card">
   <template>
     <style>
-      paper-card {
-        width: 100%;
-        height: 100%;
+      paper-button {
+        background-color: var(--header-background-color);
       }
 
-      .header {
-        font-size: 1.3rem;
-        font-weight: 500;
+       paper-button {
+        @apply --edit-options-button-text;
       }
 
-      .horizontal {
-        width: 93px;
+      .centered {
         margin: 0 auto;
+        width: 82px;
       }
     </style>
+
     <paper-card>
       <div class="card-content">
         <div class="header">
-          <span>{{title}} Options</span>
+          <h3>[[title]] Options</h3>
         </div>
-        <template is="dom-repeat" items="{{options}}">
-          <div class="option" style="padding: 5px 0;">
-            <span>[[item]]</span>
-          </div>
+        <template is='dom-repeat' items="[[options]]">
+          <p>[[item]]
         </template>
       </div>
       <div class="card-actions">
         <div class="horizontal centered">
-          <paper-button id="openModalBtn" data-key="{{name}}" raised>Edit</paper-button>
+          <paper-button on-click="openModal" raised>Edit</paper-button>
         </div>
       </div>
     </paper-card>
+
+    <options-modal id="modal" title="[[title]]" name="[[name]]" options="[[options]]" edit-options="[[options]]"></options-modal>
+    
   </template>
-  <script>
-    class OptionsCards extends Nebula.DialogBehavior(Polymer.Element) {
-      static get is() { return 'options-card' }
 
-      static get properties() {
-        return {
-          title: String,
-          name: String,
-          options: Array
-        }
-      }
-
-      connectedCallback() {
-        super.connectedCallback();
-        this.shadowRoot.querySelector("#openModalBtn").addEventListener('click', (e) => {
-          e.preventDefault();
-          this.dispatchEvent(new CustomEvent('modal-opened', {
-            bubbles: true,
-            composed: true,
-            detail: {
-              key: this.shadowRoot.querySelector("#openModalBtn").dataKey
-            }
-          }));
-          return false;
-        });
-      }
-    }
-    window.customElements.define(OptionsCards.is, OptionsCards)
-  </script>
+  <script src="options-card.js"></script> 
 </dom-module>

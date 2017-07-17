@@ -1,0 +1,9 @@
+:root {
+  --header-background-color: #1e580a;
+}
+
+html body {
+  margin: 0;
+  background-color: rgba(210, 206, 202, 0.3);
+  font-family: 'Roboto', sans-serif;
+}

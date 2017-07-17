@@ -1,0 +1,39 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="disa-auth">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      #signIn {
+        display: block;
+      }
+
+      #signOut {
+        display: none;
+      }
+
+      #signIn[signed-in] {
+        display: none;
+      }
+
+      #signOut[signed-in] {
+        display: block;
+      }
+      
+      #signOut a {
+        text-decoration: none;
+        color: #fff;
+      }
+      
+    </style>
+
+    <span id="signIn" signed-in$="[[signedIn]]"><slot name="google-signin"></slot></span>
+    <span id="signOut" signed-in$="[[signedIn]]"><a href="#" on-click="onSignOut">Sign Out</a></span>
+    
+  </template>
+
+  <script src="disa-auth.js"></script> 
+</dom-module>

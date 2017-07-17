@@ -1,0 +1,112 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../../bower_components/vaadin-grid/vaadin-grid-column.html">
+<link rel="import" href="../../bower_components/vaadin-grid/vaadin-grid-sorter.html">
+
+<dom-module id="disa-table">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      vaadin-grid {
+        font-size: 0.9rem;
+
+        --vaadin-grid-header-cell: {
+          height: 40px;
+          color: rgba(0, 0, 0, var(--dark-secondary-opacity));
+          font-size: 1rem;
+          font-weight: 500;
+        };
+
+        --vaadin-grid-body-cell: {
+          color: rgba(0, 0, 0, var(--dark-primary-opacity));
+        };
+
+        --vaadin-grid-body-row-hover-cell: {
+          background-color: var(--paper-grey-200);
+        };
+
+        --vaadin-grid-body-row-selected-cell: {
+          background-color: var(--paper-grey-100);
+        };
+
+        --vaadin-grid-focused-cell: {
+          box-shadow: none;
+          font-weight: bold;
+        };
+      }
+
+      .clickable-blank:after {
+        content: "blank";
+        font-size: 0;
+      }
+
+      vaadin-grid a {
+        text-decoration: none;
+        color: #000;
+      }
+
+    </style>
+
+    <vaadin-grid items="[[entries]]">
+      <vaadin-grid-column>
+        <template class="header"><vaadin-grid-sorter path="meta.suffixId">ID</vaadin-grid-sorter></template>
+        <template>
+          <a href="#/edit/[[item._id]]">
+            <span>DISA-[[item.meta.prefixId]]-[[item.meta.suffixId]]</span>
+          </a>
+        </template>
+      </vaadin-grid-column>
+
+      <vaadin-grid-column>
+        <template class="header"><vaadin-grid-sorter path="person.names.0.firstName">First Name</vaadin-grid-sorter></template>
+        <template>
+          <a href="#/edit/[[item._id]]" class="clickable-blank"><span>[[item.person.names.0.firstName]]</span></a>
+        </template>
+      </vaadin-grid-column>
+
+      <vaadin-grid-column>
+        <template class="header"><vaadin-grid-sorter path="person.names.0.lastName">Last Name</vaadin-grid-sorter></template>
+        <template>
+          <a href="#/edit/[[item._id]]" class="clickable-blank"><span>[[item.person.names.0.lastName]]</span></a>
+        </template>
+      </vaadin-grid-column>
+
+      <vaadin-grid-column>
+        <template class="header"><vaadin-grid-sorter id="docDateSort" on-click="docDateSortFunc">Document Date</vaadin-grid-sorter></template>
+        <template>
+          <a href="#/edit/[[item._id]]" class="clickable-blank"><span>[[documentDate(item.document.date)]]</span></a>
+        </template>
+      </vaadin-grid-column>
+
+      <vaadin-grid-column>
+        <template class="header"><vaadin-grid-sorter path="colonyState">Colony/State</vaadin-grid-sorter></template>
+        <template>
+          <a href="#/edit/[[item._id]]" class="clickable-blank"><span>[[item.person.colonyState]]</span></a>
+        </template>
+      </vaadin-grid-column>
+
+      <vaadin-grid-column>
+        <template class="header"><vaadin-grid-sorter path="meta.lastModified">Last Modified</vaadin-grid-sorter></template>
+        <template>
+          <a href="#/edit/[[item._id]]" class="clickable-blank"><span>[[_toLocaleString(item.meta.lastModified)]]</span></a>
+        </template>
+      </vaadin-grid-column>
+
+      <vaadin-grid-column>
+        <template class="header"><vaadin-grid-sorter path="meta.updatedBy">Updated By</vaadin-grid-sorter></template>
+        <template>
+          <a href="#/edit/[[item._id]]" class="clickable-blank"><span>[[item.meta.updatedBy]]</span></a>
+        </template>
+      </vaadin-grid-column>
+
+    </vaadin-grid>
+    
+  </template>
+
+  
+
+  <script src="disa-table.js"></script> 
+</dom-module>

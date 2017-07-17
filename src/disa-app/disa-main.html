@@ -1,0 +1,191 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../disa-header/disa-header.html">
+<link rel="import" href="../disa-dashboard/disa-dashboard.html">
+<link rel="import" href="../disa-admin/disa-admin.html">
+<link rel="import" href="../disa-edit/disa-edit.html">
+<link rel="import" href="../utils.html">
+
+<dom-module id="disa-main">
+  <template>
+    <style>
+      :host {
+        display: block;
+        font-family: var(--font-family);
+        background-color: var(--body-background-color);
+      }
+
+      disa-header {
+        --host: {
+          background-color: var(--header-background-color);
+        }
+
+        --link: {
+          text-decoration: none;
+          color: #fff;
+        }
+
+        --nav-link: {
+          margin-left: 0.7rem;
+          font-size: 0.9em;
+        }
+
+        --main-title: {
+          font-size: 1.15em;
+        }
+      }
+
+      disa-dashboard {
+        display: none;
+
+        --dashboard: {
+          width: 85%;
+          margin: 0 auto;
+        }
+
+        --new-person-button: {
+          background-color: var(--header-background-color);
+        }
+
+        --new-person-button-text: {
+          text-decoration: none;
+          color: #fff;
+        }
+      }
+
+      disa-dashboard[active] {
+        display: block;
+      }
+
+      disa-admin {
+        display: none;
+
+        --admin: {
+          width: 85%;
+          margin: 0 auto;
+        }
+      }
+
+      disa-admin[active] {
+        display: block;
+      }
+
+      disa-edit {
+        display: none;
+
+        --edit: {
+          width: 85%;
+          margin: 0 auto;
+        }
+      }
+
+      disa-edit[active] {
+        display: block;
+      }
+      
+    </style>
+
+    <app-location route="{{route}}" use-hash-as-path></app-location>
+    <app-route
+        route="{{route}}"
+        pattern="/dashboard"
+        active="{{dashboardActive}}">
+    </app-route>
+    <app-route
+        route="{{route}}"
+        pattern="/edit/:id"
+        data="{{editData}}"
+        active="{{editActive}}">
+    </app-route>
+    <app-route
+        route="{{route}}"
+        pattern="/admin"
+        active="{{adminActive}}">
+    </app-route>
+
+    <iron-ajax
+      id="getDraftAjax"
+      auto
+      url="[[apiHost]]/entries/draft"
+      headers="[[headers]]"
+      handle-as="json"
+      last-response="{{draftEntries}}"
+      debounce-duration="300">
+    </iron-ajax>
+
+    <iron-ajax
+      id="getInternalAjax"
+      auto
+      url="[[apiHost]]/entries/internal"
+      headers="[[headers]]"
+      handle-as="json"
+      last-response="{{internalEntries}}"
+      debounce-duration="300">
+    </iron-ajax>
+
+    <iron-ajax
+      id="getPublicAjax"
+      auto
+      url="[[apiHost]]/entries"
+      headers="[[headers]]"
+      handle-as="json"
+      last-response="{{publicEntries}}"
+      debounce-duration="300">
+    </iron-ajax>
+
+    <iron-ajax
+      id="getOptionsAjax"
+      auto
+      url="[[apiHost]]/options"
+      headers="[[headers]]"
+      handle-as="json"
+      last-response="{{options}}"
+      debounce-duration="300">
+    </iron-ajax>
+
+    <iron-ajax
+      id="saveOptionsAjax"
+      method="PUT"
+      url="[[apiHost]]/options/[[optionsName]]"
+      headers="[[headers]]"
+      content-type="application/json"
+      body="[[newOptions]]"
+      handle-as="json"
+      last-response="{{saveOptions}}"
+      debounce-duration="300">
+    </iron-ajax>
+
+    <disa-header signed-in="[[signedIn]]">
+      <slot name="google-signin" slot="google-signin"></slot>
+    </disa-header>
+
+    <disa-dashboard
+      active$="[[dashboardActive]]"
+      draft-entries="[[draftEntries]]"
+      internal-entries="[[internalEntries]]"
+      public-entries="[[publicEntries]]"
+      unsorted-draft-entries="[[unsortedDraftEntries]]"
+      unsorted-internal-entries="[[unsortedInternalEntries]]"
+      unsorted-public-entries="[[unsortedPublicEntries]]"
+      user-given-name="[[givenName]]"
+    ></disa-dashboard>
+
+    <disa-admin
+      active$="[[adminActive]]"
+      options="[[options]]"
+      user-given-name="[[givenName]]"
+    ></disa-admin>
+
+    <disa-edit
+      active$="[[editActive]]"
+      entry-id="[[editData.id]]"
+      options="[[options]]"
+      headers="[[headers]]"
+    ></disa-edit>
+    
+  </template>
+
+  <script src="disa-main.js"></script> 
+</dom-module>

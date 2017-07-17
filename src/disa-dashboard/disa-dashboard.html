@@ -1,0 +1,40 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="disa-table.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="disa-dashboard">
+  <template>
+    <style>
+      :host {
+        display: block;
+        @apply --dashboard;
+      }
+
+      paper-button {
+        @apply --new-person-button;
+      }
+
+      paper-button a {
+        @apply --new-person-button-text;
+      }
+
+    </style>
+
+    <h1>Hello [[userGivenName]]</h1>
+    <p>This is your dashboard. Click on a row in the tables below to edit the entry.</p>
+
+    <p>
+      <paper-button raised><a href="#/edit/new">New Person</a></paper-button>
+    </p>
+
+    <h2>Your Drafts</h2>
+    <disa-table entries="[[draftEntries]]" unsortedEntries="[[unsortedDraftEntries]]"></disa-table>
+    <h2>The team's Internal Entries</h2>
+    <disa-table entries="[[internalEntries]]" unsortedEntries="[[unsortedInternalEntries]]"></disa-table>
+    <h2>Entries viewable to the Public</h2>
+    <disa-table entries="[[publicEntries]]" unsortedEntries="[[unsortedPublicEntries]]"></disa-table>
+    
+  </template>
+
+  <script src="disa-dashboard.js"></script> 
+</dom-module>

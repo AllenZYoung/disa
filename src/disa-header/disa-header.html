@@ -1,0 +1,44 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../disa-auth/disa-auth.html">
+
+<dom-module id="disa-header">
+  <template>
+    <style>
+      :host {
+        display: block;
+        background-color: var(--header-background-color);
+      }
+
+      a {
+        @apply --link;
+      }
+
+      [main-title] {
+        @apply --main-title;
+      }
+
+      app-toolbar :nth-child(n+2) {
+        @apply --nav-link;
+      }
+
+    </style>
+
+    <app-header>
+      <app-toolbar>
+        <div main-title><a href="#/">Database of Indigenous Slavery in the Americas</a></div>
+        <a href="#/dashboard" class="nav">Dashboard</a>
+        <a href="#/admin" class="nav">Admin</a>
+        <a>
+          <disa-auth signed-in="[[signedIn]]">
+            <slot name="google-signin" slot="google-signin"></slot>
+          </disa-auth>
+        </a>
+      </app-toolbar>
+    </app-header>
+    
+  </template>
+
+  <script src="disa-header.js"></script> 
+</dom-module>
