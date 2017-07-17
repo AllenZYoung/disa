@@ -54,7 +54,6 @@ class DisaEdit extends Polymer.Element {
   }
 
   __entryIdChanged(entryId) {
-    console.log("id changed");
     // trigger new ajax request
     if (entryId === undefined) {
       this.set('entry', new Entry());
@@ -66,8 +65,6 @@ class DisaEdit extends Polymer.Element {
   }
 
   __entryChanged(entry) {
-    console.log("entry changed");
-    // console.log(entry.person.sex);
     if (!entry) {
       alert("This is not a valid entry. If you got here from clicking on an entry on the dashboard, email Cole.");
       window.history.pushState({}, null, '/#/dashboard');

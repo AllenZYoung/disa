@@ -101,7 +101,6 @@ class DisaMain extends Polymer.Element {
   }
 
   __routeChanged(route) {
-    console.log(route);
     if (this.signedIn && route && route.path == '' || route.path == '/') {
       this.set('route.path', '/dashboard');
     }
