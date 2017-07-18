@@ -3,10 +3,6 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
-    <!-- <script>
-      localStorage.clear();
-      sessionStorage.clear();
-    </script> -->
     <meta name="google-signin-client_id" content="446312611877-5165spcfqes4gostji9i73hf753k090k.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 
@@ -24,8 +20,8 @@
 
   </head>
   <body>
-    <disa-main>
-      <div slot="google-signin" class="g-signin2" data-width="90" data-height="28" data-onsuccess="onSignIn"></div>
+    <disa-main id="main">
+      <div id="googleAuth" slot="google-signin" class="g-signin2" data-width="90" data-height="28" data-onsuccess="onSignIn"></div>
     </disa-main>
   </body>
 </html>

@@ -19,7 +19,20 @@ class DisaMain extends Polymer.Element {
 
   constructor() {
     super();
+    console.log("constructor");
     let self = this;
+
+    // let googleUser = gapi && gapi.auth2 && gapi.auth2.getAuthInstance() && gapi.auth2.getAuthInstance().currentUser.get();
+    // if (googleUser) {
+    //   googleUser.reloadAuthResponse();
+    // }
+    // if (googleUser && googleUser.Zi && googleUser.Zi.id_token) {
+    //   localStorage.setItem('jwt', googleUser.Zi.id_token);
+    //   self.set('headers', {
+    //     "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+    //   });
+    // }
+    
     // defaults
     this.set('signedIn', Utils.isSignedIn());
     this.set('apiHost', "http://api.disa.forkinthecode.com");
@@ -49,6 +62,12 @@ class DisaMain extends Polymer.Element {
     this.addEventListener('sign-in', function(e) {
       e.preventDefault();
       self.onSignIn(e.detail.googleUser);
+      return false;
+    });
+
+    this.addEventListener('refresh', function(e) {
+      e.preventDefault();
+      self.refresh(e.detail.googleUser);
       return false;
     });
 
@@ -98,58 +117,52 @@ class DisaMain extends Polymer.Element {
 
   connectedCallback() {
     super.connectedCallback();
+    // // this.setAttribute('active', true);
+    // console.log("cc");
+    // this.setAttribute('active', true);
+    
   }
 
   __routeChanged(route) {
-    if (this.signedIn && route && route.path == '' || route.path == '/') {
+    console.log("route changed");
+    if (this.signedIn && route && (route.path == '' || route.path == '/')) {
       this.set('route.path', '/dashboard');
+    }
+    if (route && (route.path == '/admin' ||  route.path.startsWith('/edit'))) {
+      this.$.getOptionsAjax.generateRequest();
     }
   }
 
   // BEGIN Auth
   onSignIn(googleUser) {
-    let self = this;
+    console.log("sign in");
     this.set('signedIn', true);
-    let id_token = googleUser.getAuthResponse().id_token;
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', `${this.apiHost}/tokensignin`);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function() {
-      let response = JSON.parse(xhr.responseText);
-      if (response.error) {
-        alert("There was an error signing in. Please try again.");
-        return;
-      }
-      // setup refresh mechanism
-      window.refresh = window.setInterval(function () {
-        googleUser.reloadAuthResponse();
-        const jwt = googleUser.getAuthResponse().id_token;
-        localStorage.setItem('jwt', jwt);
-        self.set('headers', {
-          "Authorization": `Bearer ${localStorage.getItem("jwt")}`
-        });
-      }, (googleUser.getAuthResponse().expires_in - 1800) * 1000);
-      localStorage.setItem('jwt', id_token);
-      self.set('headers', {
-        "Authorization": `Bearer ${localStorage.getItem("jwt")}`
-      });
-      localStorage.setItem('status', response.status);
-      localStorage.setItem('givenName', response.givenName);
-      window.history.pushState({}, null, '/#/dashboard');
-      window.dispatchEvent(new CustomEvent('location-changed'));
-      window.scrollTo(0,0);
-    };
-    xhr.send('idtoken=' + id_token);
+    this.refresh(googleUser);
   }
 
   onSignOut() {
     this.set('signedIn', false);
-    window.clearInterval(window.refresh);
+    // window.clearInterval(window.refresh);
     localStorage.clear();
     let auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
       console.log('User signed out.');
     });
+  }
+
+  refresh(googleUser) {
+    console.log("refreshing");
+    try {
+      googleUser.reloadAuthResponse();
+      const jwt = googleUser.getAuthResponse().id_token;
+      if (!jwt) return;
+      localStorage.setItem('jwt', jwt);
+      this.set('headers', {
+        "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+      });
+    } catch (e) {
+      return;
+    }
   }
   // END auth
 }
@@ -158,12 +171,47 @@ window.customElements.define(DisaMain.is, DisaMain);
 
 // export the onSignIn method into global space
 function onSignIn(googleUser) {
+  console.log("global sign in");
+  let id_token = googleUser.getAuthResponse().id_token;
+  let xhr = new XMLHttpRequest();
+  xhr.open('POST', `http://api.disa.forkinthecode.com/tokensignin`);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.onload = function() {
+    let response = JSON.parse(xhr.responseText);
+    if (response.error) {
+      alert("There was an error signing in. Please try again.");
+      return;
+    }
+    
+    localStorage.setItem('status', response.status);
+    localStorage.setItem('givenName', response.givenName);
+
+    document.getElementsByTagName('disa-main')[0].dispatchEvent(
+      new CustomEvent('sign-in', {
+        bubbles: false,
+        detail: {
+          googleUser: googleUser
+        }
+      })
+    );
+
+    window.history.pushState({}, null, '/#/dashboard');
+    window.dispatchEvent(new CustomEvent('location-changed'));
+    window.scrollTo(0,0);
+  };
+  xhr.send('idtoken=' + id_token);
+}
+
+window.refresh = window.setInterval(function () {
+  console.log("global refresh");
+  let googleUser = gapi && gapi.auth2 && gapi.auth2.getAuthInstance() && gapi.auth2.getAuthInstance().currentUser.get();
+  if (!googleUser) return;
   document.getElementsByTagName('disa-main')[0].dispatchEvent(
-    new CustomEvent('sign-in', {
+    new CustomEvent('refresh', {
       bubbles: false,
       detail: {
         googleUser: googleUser
       }
     })
   );
-}
+}, (10) * 1000);

@@ -31,10 +31,7 @@ class Person {
     this.age = undefined;
     this.typeKindOfEnslavement = "";
     this.vocation = "";
-    this.stringLocation = "";
-    this.colonyState = "";
-    this.nationalContext = "";
-
+    
     this.father = new Parent();
     this.mother = new Parent();
     this.children = [];
@@ -47,7 +44,7 @@ class Parent {
     this.race = "";
     this.origin = "";
     this.status = "";
-    this.owner = "";
+    this.owner = new Owner();
   }
 }
 
@@ -108,6 +105,9 @@ class TriplePartDate {
 class Document {
   constructor() {
     this.date = new TriplePartDate();
+    this.stringLocation = "";
+    this.colonyState = "";
+    this.nationalContext = "";
     this.sourceType = "";
     this.recordType = "";
     this.citation = "";

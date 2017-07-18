@@ -49,16 +49,15 @@ class OwnerEdit extends Polymer.Element {
 
   createFromData(formData) {
     let owner = new Owner();
-    
 
-    let titles = formData['title'];
-    let firstNames = formData['ownerFirstName'];
-    let lastNames = formData['ownerLastName'];
+    let title = formData['title'];
+    let firstName = formData['ownerFirstName'];
+    let lastName = formData['ownerLastName'];
 
     let name = new OwnerName();
-    name.type = titles;
-    name.firstName = firstNames;
-    name.lastName = lastNames;
+    name.title = title;
+    name.firstName = firstName;
+    name.lastName = lastName;
     owner.name = name;
 
     let vocation = formData['ownerVocation'];

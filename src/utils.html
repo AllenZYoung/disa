@@ -50,7 +50,7 @@
 
     static isSignedIn() {
       // check local storage
-      return localStorage.getItem('jwt') != null;
+      return localStorage.getItem('jwt') != null && localStorage.getItem('jwt') != undefined;
     }
 
     static isAdmin() {

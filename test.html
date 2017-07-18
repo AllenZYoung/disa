@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+  </head>
+  <body>
+    <div id="test"></div>
+
+    <script>
+      let jwt = localStorage.getItem('jwt');
+      for (let i in localStorage) {
+        let j = document.createElement('p');
+        j.innerHTML = localStorage[i];
+        document.getElementById('test').appendChild(j);
+      }
+      
+    </script>
+  </body>
+</html>

@@ -7,6 +7,7 @@
 <link rel="import" href="../disa-admin/disa-admin.html">
 <link rel="import" href="../disa-edit/disa-edit.html">
 <link rel="import" href="../utils.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
 
 <dom-module id="disa-main">
   <template>
@@ -137,7 +138,6 @@
 
     <iron-ajax
       id="getOptionsAjax"
-      auto
       url="[[apiHost]]/options"
       headers="[[headers]]"
       handle-as="json"
