@@ -77,7 +77,7 @@ class DisaEdit extends Polymer.Element {
     if (entryId == 'new') {
       return 'New Person';
     } else {
-      return `This is DISA-${this.entry && this.entry.meta && this.entry.meta.category || ''}-${this.entry && this.entry.meta && this.entry.meta.identifier || ''}`;
+      return `This is DISA-${this.entry && this.entry.meta && this.entry.meta.idPrefix || ''}-${this.entry && this.entry.meta && this.entry.meta.idSuffix || ''}`;
     }
   }
 
