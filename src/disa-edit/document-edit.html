@@ -1,0 +1,69 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+
+<dom-module id="document-edit">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      *:not(paper-button):not(paper-listbox) {
+        width: 100%;
+      }
+
+      paper-dropdown-menu {
+        --paper-dropdown-menu-button: {
+          left: 0;
+          width: 100%;
+        }
+      }
+
+      paper-listbox {
+        --paper-listbox: {
+          width: 300px;
+          overflow: hidden;
+        }
+      }
+
+      iron-dropdown {
+        left:0 !important;
+        width:100% !important;
+      }
+      
+
+    </style>
+
+    <h2>Source Information</h2>
+    <h3>Date of Document</h3>
+    <paper-input name="year" label="Year" value="[[document.date.year]]"></paper-input>
+    <paper-dropdown-menu label="Month" selected-item="{{month}}" selected-item-label="{{selectedMonth}}">
+      <paper-listbox slot="dropdown-content" selected="[[__indexOf(document.date.month, 'month', options)]]">
+        <template is="dom-repeat" items="[[__getOptions('month', options)]]">
+          <paper-item value="[[item]]">[[item]]</paper-item>
+        </template>
+      </paper-listbox>
+    </paper-dropdown-menu>
+    <input name="month" type="hidden" value$="[[month.value]]" />
+    <paper-input name="day" label="Day" value="[[document.date.day]]"></paper-input>
+
+    <h3>Location</h3>
+    <paper-input name="stringLocation" label="Location" value="{{document.stringLocation}}"></paper-input>
+    <paper-input name="colonyState" label="Colony/State" value="{{document.colonyState}}"></paper-input>
+    <paper-input name="nationalContext" label="National Context" value="{{document.nationalContext}}"></paper-input>
+
+    <h3>Citation</h3>
+    <paper-input name="sourceType" label="Source Type" value="{{document.sourceType}}"></paper-input>
+    <paper-input name="recordType" label="Record Type" value="{{document.recordType}}"></paper-input>
+    <paper-input name="citation" label="Citation" value="{{document.citation}}"></paper-input>
+
+  </template>
+
+  <script src="document-edit.js"></script>
+</dom-module>

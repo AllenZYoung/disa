@@ -121,6 +121,15 @@ class DisaEdit extends Polymer.Element {
     body.buyer = buyer;
     body.seller = seller;
 
+    let document = this.$.document.createFromData(formData);
+    body.document = document;
+
+    let additionalInformation = formData['additionalInformation'];
+    body.additionalInformation = additionalInformation;
+
+    let researcherNotes = formData['researcherNotes'];
+    body.researcherNotes = researcherNotes;
+
     // body.meta = self.entry && self.entry.meta || {};
     let meta = new Meta();
     meta.lastModified = new Date();

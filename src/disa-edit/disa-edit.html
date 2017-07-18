@@ -18,6 +18,7 @@
 <link rel="import" href="person-edit.html">
 <link rel="import" href="owner-edit.html">
 <link rel="import" href="misc-person-edit.html">
+<link rel="import" href="document-edit.html">
 
 <script src="../entry/index.js"></script>
 
@@ -103,7 +104,11 @@
 
         <misc-person-edit id="misc" entry="[[entry]]" options="[[options]]"></misc-person-edit>
 
-        <!-- <document-edit id="document" entry="[[entry]]" options="[[options]]"></document-edit> -->
+        <document-edit id="document" document="[[entry.document]]" options="[[options]]"></document-edit> 
+
+        <h2>Researcher Comments</h2>
+        <paper-textarea id="ai" name="additionalInformation" label="Additional Information" value="[[entry.additionalInformation]]"></paper-textarea>
+        <paper-textarea id="rn" name="researcherNotes" label="Researcher Notes" value="[[entry.researcherNotes]]"></paper-textarea>
 
         <div id="actions">
           <div id="spinnerContainer" style="width: 28px; height: 28px; margin: 0 auto; padding-bottom:10px; display:none;">
