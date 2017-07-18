@@ -17,6 +17,7 @@
 
 <link rel="import" href="person-edit.html">
 <link rel="import" href="owner-edit.html">
+<link rel="import" href="misc-person-edit.html">
 
 <script src="../entry/index.js"></script>
 
@@ -98,7 +99,11 @@
 
         <person-edit id="person" person="[[entry.person]]" options="[[options]]"></person-edit>
 
-        <owner-edit id="owner" owner="[[entry.owner]]" options="[[options]]"></owner-edit> 
+        <owner-edit id="owner" owner="[[entry.owner]]" options="[[options]]"></owner-edit>
+
+        <misc-person-edit id="misc" entry="[[entry]]" options="[[options]]"></misc-person-edit>
+
+        <!-- <document-edit id="document" entry="[[entry]]" options="[[options]]"></document-edit> -->
 
         <div id="actions">
           <div id="spinnerContainer" style="width: 28px; height: 28px; margin: 0 auto; padding-bottom:10px; display:none;">

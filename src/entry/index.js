@@ -48,7 +48,7 @@ class Parent {
   }
 }
 
-class Childen {
+class Child {
   constructor() {
     this.name = new ChildName();
   }

@@ -47,6 +47,25 @@ class PersonEdit extends Polymer.Element {
     this.set('person.names', newNames);
   }
 
+  addChild() {
+    console.log("adding child");
+    console.log(this.person.children);
+    let newChildren = [];
+    Utils.cloneArray(newChildren, this.person.children);
+    newChildren.push(new Child());
+    console.log(newChildren);
+    this.set('person.children', newChildren);
+    console.log(this.person.children);
+  }
+
+  removeChild(e) {
+    let index = e.path[0].dataIndex;
+    let newChildren = [];
+    Utils.cloneArray(newChildren, this.person.children);
+    newChildren.splice(index, 1);
+    this.set('person.children', newChildren);
+  }
+
   createFromData(formData) {
     let person = new Person();
     
@@ -85,6 +104,9 @@ class PersonEdit extends Polymer.Element {
 
     let vocation = formData['vocation'];
     person.vocation = vocation;
+
+    let typeKindOfEnslavement = formData['typeKindOfEnslavement'];
+    person.typeKindOfEnslavement = typeKindOfEnslavement;
 
     let father = new Parent();
 
@@ -170,6 +192,28 @@ class PersonEdit extends Polymer.Element {
     mother.owner = motherOwner;
 
     person.mother = mother;
+
+    let children = [];
+
+    let childFirstNames = formData['childFirstName[]'];
+    childFirstNames = Utils.makeArray(childFirstNames);
+    let childLastNames = formData['childLastName[]'];
+    childLastNames = Utils.makeArray(childLastNames);
+    // hope that they don't have different lengths
+    // they shouldn't but you never know what might happen
+    console.log(childFirstNames, childLastNames);
+    for (let i = 0; i < childFirstNames.length; ++i) {
+      let child = new Child();
+
+      let childName = new ChildName();
+      childName.firstName = childFirstNames[i];
+      childName.lastName = childLastNames[i];
+
+      child.name = childName;
+      
+      children.push(child);
+    }
+    person.children = children;
 
     return person;
   }
