@@ -65,6 +65,10 @@ class DisaEdit extends Polymer.Element {
   }
 
   __entryChanged(entry) {
+    this.$.ai.shadowRoot.children[1].children.input.shadowRoot.querySelector("textarea").dispatchEvent(new CustomEvent("bind-value-changed", {bubbles:true, composed:true}));
+    this.$.rn.shadowRoot.children[1].children.input.shadowRoot.querySelector("textarea").dispatchEvent(new CustomEvent("bind-value-changed", {bubbles:true, composed:true}));
+    this.$.ai.shadowRoot.children[1].children.input.shadowRoot.querySelector("textarea").dispatchEvent(new CustomEvent("blur", {bubbles:true, composed:true}));
+    this.$.rn.shadowRoot.children[1].children.input.shadowRoot.querySelector("textarea").dispatchEvent(new CustomEvent("blur", {bubbles:true, composed:true}));
     if (!entry) {
       alert("This is not a valid entry. If you got here from clicking on an entry on the dashboard, email Cole.");
       window.history.pushState({}, null, '/#/dashboard');

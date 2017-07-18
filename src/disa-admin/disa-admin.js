@@ -69,6 +69,10 @@ class DisaAdmin extends Polymer.Element {
         return "Title";
       case "ownerVocation":
         return "Owner Vocation";
+      case "vocation":
+        return "Vocation";
+      case "typeKindOfEnslavement":
+        return "Type/Kind of Enslavement";
       default:
         return key;
     }
