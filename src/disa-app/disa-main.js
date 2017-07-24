@@ -13,8 +13,15 @@ class DisaMain extends Polymer.Element {
 
   static get observers() {
     return [
-      '__routeChanged(route)'
+      '__routeChanged(route)',
+      '__entriesChanged(draftEntries, internalEntries, publicEntries)'
     ]
+  }
+
+  __entriesChanged(draft, internal, publicEntries) {
+    this.set('unsortedDraftEntries', draft);
+    this.set('unsortedInternalEntries', internal);
+    this.set('unsortedPublicEntries', publicEntries);
   }
 
   constructor() {
@@ -155,11 +162,33 @@ class DisaMain extends Polymer.Element {
     try {
       googleUser.reloadAuthResponse();
       const jwt = googleUser.getAuthResponse().id_token;
+      let xhr = new XMLHttpRequest();
+      xhr.open('POST', `http://api.disa.forkinthecode.com/tokensignin`);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onload = function() {
+        console.log("HELLO?");
+        let response = JSON.parse(xhr.responseText);
+        if (response.error) {
+          return;
+        }
+        
+        localStorage.setItem('status', response.status);
+        localStorage.setItem('givenName', response.givenName);
+      };
+      xhr.send('idtoken=' + jwt);
+      console.log(jwt, "waht");
       if (!jwt) return;
+      console.log("past no return");
       localStorage.setItem('jwt', jwt);
       this.set('headers', {
         "Authorization": `Bearer ${localStorage.getItem("jwt")}`
       });
+
+      this.set('signedIn', Utils.isSignedIn());
+
+      if (Utils.isSignedIn() && (this.route.path == '' || this.route.path == '/')) {
+        this.set('route.path', '/dashboard');
+      }
     } catch (e) {
       return;
     }

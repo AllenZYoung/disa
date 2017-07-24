@@ -31,6 +31,10 @@ class DocumentEdit extends Polymer.Element {
     return Utils.__indexOf(value, key, options);
   }
 
+  __monthIndex(month) {
+    return Utils.__monthIndex(month);
+  }
+
   createFromData(formData) {
     let document = new Document();
 
@@ -41,7 +45,7 @@ class DocumentEdit extends Polymer.Element {
     let day = formData['day'];
 
     date.year = year;
-    date.month = month;
+    date.month = (new Date(`1 ${month} 9999`).getMonth() + 1) || '';
     date.day = day;
 
     document.date = date;

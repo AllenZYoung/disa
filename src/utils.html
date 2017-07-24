@@ -37,6 +37,10 @@
       return Utils.__getOptions(key, options).indexOf(value);
     }
 
+    static __monthIndex(month) {
+      return month - 1;
+    }
+
     static makeArray(data) {
       switch (typeof data) {
         case 'object':

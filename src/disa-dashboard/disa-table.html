@@ -52,7 +52,7 @@
 
     <vaadin-grid items="[[entries]]">
       <vaadin-grid-column>
-        <template class="header"><vaadin-grid-sorter path="meta.suffixId">ID</vaadin-grid-sorter></template>
+        <template class="header"><vaadin-grid-sorter path="meta.idSuffix">ID</vaadin-grid-sorter></template>
         <template>
           <a href="#/edit/[[item._id]]">
             <span>DISA-[[item.meta.idPrefix]]-[[item.meta.idSuffix]]</span>
@@ -77,14 +77,14 @@
       <vaadin-grid-column>
         <template class="header"><vaadin-grid-sorter id="docDateSort" on-click="docDateSortFunc">Document Date</vaadin-grid-sorter></template>
         <template>
-          <a href="#/edit/[[item._id]]" class="clickable-blank"><span>[[documentDate(item.document.date)]]</span></a>
+          <a href="#/edit/[[item._id]]" class="clickable-blank"><span>[[__documentDate(item.document.date)]]</span></a>
         </template>
       </vaadin-grid-column>
 
       <vaadin-grid-column>
-        <template class="header"><vaadin-grid-sorter path="colonyState">Colony/State</vaadin-grid-sorter></template>
+        <template class="header"><vaadin-grid-sorter path="document.colonyState">Colony/State</vaadin-grid-sorter></template>
         <template>
-          <a href="#/edit/[[item._id]]" class="clickable-blank"><span>[[item.person.colonyState]]</span></a>
+          <a href="#/edit/[[item._id]]" class="clickable-blank"><span>[[item.document.colonyState]]</span></a>
         </template>
       </vaadin-grid-column>
 

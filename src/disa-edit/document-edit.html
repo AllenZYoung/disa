@@ -44,7 +44,7 @@
     <h3>Date of Document</h3>
     <paper-input name="year" label="Year" value="[[document.date.year]]"></paper-input>
     <paper-dropdown-menu label="Month" selected-item="{{month}}" selected-item-label="{{selectedMonth}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(document.date.month, 'month', options)]]">
+      <paper-listbox slot="dropdown-content" selected="[[__monthIndex(document.date.month)]]">
         <template is="dom-repeat" items="[[__getOptions('month', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>

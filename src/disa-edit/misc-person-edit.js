@@ -31,6 +31,10 @@ class MiscPersonEdit extends Polymer.Element {
     return Utils.__indexOf(value, key, options);
   }
 
+  __monthIndex(month) {
+    return Utils.__monthIndex(month);
+  }
+
   createFromData(formData) {
     let dateOfRunaway = new TriplePartDate();
 
@@ -39,7 +43,7 @@ class MiscPersonEdit extends Polymer.Element {
     let dateOfRunawayDay = formData['dateOfRunawayDay'];
 
     dateOfRunaway.year = dateOfRunawayYear;
-    dateOfRunaway.month = dateOfRunawayMonth;
+    dateOfRunaway.month = (new Date(`1 ${dateOfRunawayMonth} 9999`).getMonth() + 1) || '';
     dateOfRunaway.day = dateOfRunawayDay;
 
     let dateOfEmancipation = new TriplePartDate();
@@ -49,7 +53,7 @@ class MiscPersonEdit extends Polymer.Element {
     let dateOfEmancipationDay = formData['dateOfEmancipationDay'];
 
     dateOfEmancipation.year = dateOfEmancipationYear;
-    dateOfEmancipation.month = dateOfEmancipationMonth;
+    dateOfEmancipation.month = (new Date(`1 ${dateOfEmancipationMonth} 9999`).getMonth() + 1) || '';
     dateOfEmancipation.day = dateOfEmancipationDay;
 
     let buyer = new Name();
@@ -71,7 +75,7 @@ class MiscPersonEdit extends Polymer.Element {
     let dateOfSaleDay = formData['dateOfSaleDay'];
 
     dateOfSale.year = dateOfSaleYear;
-    dateOfSale.month = dateOfSaleMonth;
+    dateOfSale.month = (new Date(`1 ${dateOfSaleMonth} 9999`).getMonth() + 1) || '';
     dateOfSale.day = dateOfSaleDay;
 
     let dateOfMarriage = new TriplePartDate();
@@ -81,7 +85,7 @@ class MiscPersonEdit extends Polymer.Element {
     let dateOfMarriageDay = formData['dateOfMarriageDay'];
 
     dateOfMarriage.year = dateOfMarriageYear;
-    dateOfMarriage.month = dateOfMarriageMonth;
+    dateOfMarriage.month = (new Date(`1 ${dateOfMarriageMonth} 9999`).getMonth() + 1) || '';
     dateOfMarriage.day = dateOfMarriageDay;
 
     return [dateOfRunaway, dateOfEmancipation, buyer, seller, dateOfSale, dateOfMarriage];

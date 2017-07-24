@@ -44,7 +44,7 @@
     <h4>Date of Runaway</h4>
     <paper-input name="dateOfRunawayYear" label="Year" value="[[entry.dateOfRunaway.year]]"></paper-input>
     <paper-dropdown-menu label="Month" selected-item="{{dateOfRunawayMonth}}" selected-item-label="{{selectedDateOfRunawayMonth}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(entry.dateOfRunaway.month, 'month', options)]]">
+      <paper-listbox slot="dropdown-content" selected="[[__monthIndex(entry.dateOfRunaway.month)]]">
         <template is="dom-repeat" items="[[__getOptions('month', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
@@ -56,7 +56,7 @@
     <h4>Date of Emancipation</h4>
     <paper-input name="dateOfEmancipationYear" label="Year" value="[[entry.dateOfEmancipation.year]]"></paper-input>
     <paper-dropdown-menu label="Month" selected-item="{{dateOfEmancipationMonth}}" selected-item-label="{{selectedDateOfEmancipationMonth}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(entry.dateOfEmancipation.month, 'month', options)]]">
+      <paper-listbox slot="dropdown-content" selected="[[__monthIndex(entry.dateOfEmancipation.month)]]">
         <template is="dom-repeat" items="[[__getOptions('month', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
@@ -76,7 +76,7 @@
     <h4>Date of Sale</h4>
     <paper-input name="dateOfSaleYear" label="Year" value="[[entry.dateOfSale.year]]"></paper-input>
     <paper-dropdown-menu label="Month" selected-item="{{dateOfSaleMonth}}" selected-item-label="{{selectedDateOfSaleMonth}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(entry.dateOfSale.month, 'month', options)]]">
+      <paper-listbox slot="dropdown-content" selected="[[__monthIndex(entry.dateOfSale.month)]]">
         <template is="dom-repeat" items="[[__getOptions('month', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
@@ -89,7 +89,7 @@
     <h3>Date of Marriage</h3>
     <paper-input name="dateOfMarriageYear" label="Year" value="[[entry.dateOfMarriage.year]]"></paper-input>
     <paper-dropdown-menu label="Month" selected-item="{{dateOfMarriageMonth}}" selected-item-label="{{selectedDateOfMarriageMonth}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(entry.dateOfMarriage.month, 'month', options)]]">
+      <paper-listbox slot="dropdown-content" selected="[[__monthIndex(entry.dateOfMarriage.month)]]">
         <template is="dom-repeat" items="[[__getOptions('month', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
