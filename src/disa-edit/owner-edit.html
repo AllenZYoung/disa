@@ -43,7 +43,7 @@
     <h3>Owner</h3>
     <paper-dropdown-menu label="Title" selected-item="{{title}}" selected-item-label="{{selectedTitle}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(owner.name.title, 'title', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('title', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('title', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
@@ -54,7 +54,7 @@
 
     <paper-dropdown-menu label="Owner Vocation" selected-item="{{ownerVocation}}" selected-item-label="{{selectedOwnerVocation}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(owner.vocation, 'ownerVocation', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('ownerVocation', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('ownerVocation', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
