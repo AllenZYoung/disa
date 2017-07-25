@@ -24,18 +24,55 @@
     }
 
     static __getOptions(key, options) {
-      if (!key || !options) return [];
-      for (let option of options) {
+      if (!key || !options) return ['Add Option'];
+      let clonedOptions = [];
+      Utils.cloneArray(clonedOptions, options);
+      let returnOptions = [];
+      if (!key || !clonedOptions) return ['Add Option'];
+      for (let option of clonedOptions) {
         if (Utils.__key(option) == key) {
-          return Utils.__value(option);
+          returnOptions = Utils.__value(option);
+          returnOptions.push('Add Option');
+          return returnOptions;
         }
       }
-      return [];
+      returnOptions = [];
+      returnOptions.push('Add Option');
+      return returnOptions;
     }
 
     static __getSortedOptions(key, options) {
-      let unsortedOptions = Utils.__getOptions(key, options);
-      return unsortedOptions.sort((l, r) => l.toString().toLowerCase() > r.toString().toLowerCase());
+      let clonedOptions = [];
+      Utils.cloneArray(clonedOptions, options);
+      let unsortedOptions = Utils.__getOptions(key, clonedOptions);
+      unsortedOptions.splice(-1);
+      let choppedUnsortedOptions = unsortedOptions;
+      let choppedSortedOptions = choppedUnsortedOptions.sort((l, r) => l.toString().toLowerCase() > r.toString().toLowerCase());
+      let sortedOptions = choppedSortedOptions.splice(0);
+      sortedOptions.push('Add Option');
+      return sortedOptions;
+    }
+
+    static __addOption(e) {
+      e.stopPropagation();
+      window.fea = e;
+      let key = e.path[1].getAttribute('data-key');
+      let optionsPlusAddOption = e.path[1].previousElementSibling.children[0].items.map((item)=>item.value);
+      let clonedOptions = [];
+      Utils.cloneArray(clonedOptions, optionsPlusAddOption);
+      clonedOptions.splice(-1);
+      let options = clonedOptions;
+      options.push(e.path[1].children[0].value);
+      console.log(key, options);
+      // return options;
+      return (new CustomEvent('save-options', {
+          bubble: true,
+          composed: true,
+          detail: {
+            options: options,
+            key: key
+          }
+        }));
     }
 
     static __indexOf(value, key, options) {

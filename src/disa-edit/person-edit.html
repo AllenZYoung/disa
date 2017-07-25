@@ -36,6 +36,10 @@
         left:0 !important;
         width:100% !important;
       }
+
+      .hidden {
+        display: none;
+      }
       
 
     </style>
@@ -53,6 +57,10 @@
           </template>
         </paper-listbox>
       </paper-dropdown-menu>
+      <div id="nameTypeOptions" data-key="nameType" class="hidden">
+        <paper-input name="newNameTypeOption" label="New Option"></paper-input>
+        <paper-button raised on-click="__addOption" data-key="nameType">Add Option</paper-button>
+      </div>
       <input name="nameType[]" type="hidden" value$="[[nameType.value]]" />
 
       <paper-button on-click="removeName" data-property="names" data-index="[[index]]" raised>Remove Name</paper-button>
@@ -68,6 +76,10 @@
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+    <div id="tribeOptions" data-key="tribe" class="hidden">
+      <paper-input name="newTribeOption" label="New Option"></paper-input>
+      <paper-button raised on-click="__addOption" data-key="tribe">Add Option</paper-button>
+    </div> 
     <input name="tribe" type="hidden" value$="[[tribe.value]]" />
     <br>
 
@@ -78,6 +90,10 @@
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+    <div id="originOptions" data-key="origin" class="hidden">
+      <paper-input name="newOriginOption" label="New Option"></paper-input>
+      <paper-button raised on-click="__addOption" data-key="origin">Add Option</paper-button>
+    </div>
     <input name="origin" type="hidden" value$="[[origin.value]]" />
     <br>  
   
@@ -88,6 +104,10 @@
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+    <div id="raceOptions" data-key="race" class="hidden">
+      <paper-input name="newRaceOption" label="New Option"></paper-input>
+      <paper-button raised on-click="__addOption" data-key="race">Add Option</paper-button>
+    </div>
     <input name="race" type="hidden" value$="[[race.value]]" />
     <br>
 
@@ -98,6 +118,10 @@
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+    <div id="sexOptions" data-key="sex" class="hidden">
+      <paper-input name="newSexOption" label="New Option"></paper-input>
+      <paper-button raised on-click="__addOption" data-key="sex">Add Option</paper-button>
+    </div>
     <input name="sex" type="hidden" value$="{{sex.value}}" />
 
     <paper-input name="age" label="Age" value="[[person.age]]"></paper-input>
@@ -109,6 +133,10 @@
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+    <div id="vocationOptions" data-key="vocation" class="hidden">
+      <paper-input name="newVocationOption" label="New Option"></paper-input>
+      <paper-button raised on-click="__addOption" data-key="vocation">Add Option</paper-button>
+    </div>
     <input name="vocation" type="hidden" value$="[[vocation.value]]" />
 
     <paper-dropdown-menu label="Type/Kind of Enslavement" selected-item="{{typeKindOfEnslavement}}" selected-item-label="{{selectedTypeKindOfEnslavement}}">
@@ -118,6 +146,10 @@
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+    <div id="typeKindOfEnslavementOptions" data-key="typeKindOfEnslavement" class="hidden">
+      <paper-input name="newTypeKindOfEnslavementOption" label="New Option"></paper-input>
+      <paper-button raised on-click="__addOption" data-key="typeKindOfEnslavement">Add Option</paper-button>
+    </div>
     <input name="typeKindOfEnslavement" type="hidden" value$="[[typeKindOfEnslavement.value]]" />
 
     <h3>Father</h3>
@@ -131,6 +163,10 @@
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+    <div id="originOptions" data-key="origin" class="hidden">
+      <paper-input name="newOriginOption" label="New Option"></paper-input>
+      <paper-button raised on-click="__addOption" data-key="origin">Add Option</paper-button>
+    </div>
     <input name="fatherOrigin" type="hidden" value$="[[origin.value]]" />
     <br>
 
@@ -141,6 +177,10 @@
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+    <div id="raceOptions" data-key="race" class="hidden">
+      <paper-input name="newRaceOption" label="New Option"></paper-input>
+      <paper-button raised on-click="__addOption" data-key="race">Add Option</paper-button>
+    </div>
     <input name="fatherRace" type="hidden" value$="[[fatherRace.value]]" />
     <br>
 
@@ -151,6 +191,10 @@
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+    <div id="statusOptions" data-key="status" class="hidden">
+      <paper-input name="newStatusOption" label="New Option"></paper-input>
+      <paper-button raised on-click="__addOption" data-key="status">Add Option</paper-button>
+    </div>
     <input name="fatherStatus" type="hidden" value$="[[fatherStatus.value]]" />
     <br>
 
@@ -162,6 +206,10 @@
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+    <div id="titleOptions" data-key="title" class="hidden">
+      <paper-input name="newTitleOption" label="New Option"></paper-input>
+      <paper-button raised on-click="__addOption" data-key="title">Add Option</paper-button>
+    </div>
     <input name="fatherOwnerTitle" type="hidden" value$="[[fatherOwnerTitle.value]]" />
     <paper-input name="fatherOwnerFirstName" label="First Name" value="{{person.father.owner.name.firstName}}"></paper-input>
     <paper-input name="fatherOwnerLastName" label="Last Name" value="{{person.father.owner.name.lastName}}"></paper-input>
@@ -173,6 +221,10 @@
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+    <div id="ownerVocationOptions" data-key="ownerVocation" class="hidden">
+      <paper-input name="newOwnerVocationOption" label="New Option"></paper-input>
+      <paper-button raised on-click="__addOption" data-key="ownerVocation">Add Option</paper-button>
+    </div>
     <input name="fatherOwnerVocation" type="hidden" value$="[[fatherOwnerVocation.value]]" />
 
     <h3>Mother</h3>
@@ -186,6 +238,10 @@
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+    <div id="originOptions" data-key="origin" class="hidden">
+      <paper-input name="newOriginOption" label="New Option"></paper-input>
+      <paper-button raised on-click="__addOption" data-key="origin">Add Option</paper-button>
+    </div>
     <input name="motherOrigin" type="hidden" value$="[[origin.value]]" />
     <br>
 
@@ -196,6 +252,10 @@
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+    <div id="raceOptions" data-key="race" class="hidden">
+      <paper-input name="newRaceOption" label="New Option"></paper-input>
+      <paper-button raised on-click="__addOption" data-key="race">Add Option</paper-button>
+    </div>
     <input name="motherRace" type="hidden" value$="[[motherRace.value]]" />
     <br>
 
@@ -206,6 +266,10 @@
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+    <div id="statusOptions" data-key="status" class="hidden">
+      <paper-input name="newStatusOption" label="New Option"></paper-input>
+      <paper-button raised on-click="__addOption" data-key="status">Add Option</paper-button>
+    </div>
     <input name="motherStatus" type="hidden" value$="[[motherStatus.value]]" />
     <br>
 
@@ -217,6 +281,10 @@
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+    <div id="titleOptions" data-key="title" class="hidden">
+      <paper-input name="newTitleOption" label="New Option"></paper-input>
+      <paper-button raised on-click="__addOption" data-key="title">Add Option</paper-button>
+    </div>
     <input name="motherOwnerTitle" type="hidden" value$="[[motherOwnerTitle.value]]" />
     <paper-input name="motherOwnerFirstName" label="First Name" value="{{person.mother.owner.name.firstName}}"></paper-input>
     <paper-input name="motherOwnerLastName" label="Last Name" value="{{person.mother.owner.name.lastName}}"></paper-input>
@@ -228,6 +296,10 @@
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
+    <div id="ownerVocationOptions" data-key="ownerVocation" class="hidden">
+      <paper-input name="newOwnerVocationOption" label="New Option"></paper-input>
+      <paper-button raised on-click="__addOption" data-key="ownerVocation">Add Option</paper-button>
+    </div>
     <input name="motherOwnerVocation" type="hidden" value$="[[motherOwnerVocation.value]]" />
 
     <h3>Children</h3>

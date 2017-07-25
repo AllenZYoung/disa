@@ -93,7 +93,7 @@ class DisaMain extends Polymer.Element {
         return;
       }
       let newOptions = e.detail.options;
-
+      console.log(newOptions);
       // TODO: do this after success response
       let clonedOptions = [];
       Utils.cloneArray(clonedOptions, self.options);
@@ -105,6 +105,7 @@ class DisaMain extends Polymer.Element {
           break;
         }
       }
+      console.log(clonedOptions);
       this.set('options', clonedOptions);
 
       this.set('optionsName', key);
@@ -131,7 +132,6 @@ class DisaMain extends Polymer.Element {
   }
 
   __routeChanged(route) {
-    console.log("route changed");
     if (this.signedIn && route && (route.path == '' || route.path == '/')) {
       this.set('route.path', '/dashboard');
     }
@@ -142,7 +142,6 @@ class DisaMain extends Polymer.Element {
 
   // BEGIN Auth
   onSignIn(googleUser) {
-    console.log("sign in");
     this.set('signedIn', true);
     this.refresh(googleUser);
   }
@@ -158,7 +157,6 @@ class DisaMain extends Polymer.Element {
   }
 
   refresh(googleUser) {
-    console.log("refreshing");
     try {
       googleUser.reloadAuthResponse();
       const jwt = googleUser.getAuthResponse().id_token;
@@ -166,7 +164,6 @@ class DisaMain extends Polymer.Element {
       xhr.open('POST', `http://api.disa.forkinthecode.com/tokensignin`);
       xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
       xhr.onload = function() {
-        console.log("HELLO?");
         let response = JSON.parse(xhr.responseText);
         if (response.error) {
           return;
@@ -176,9 +173,7 @@ class DisaMain extends Polymer.Element {
         localStorage.setItem('givenName', response.givenName);
       };
       xhr.send('idtoken=' + jwt);
-      console.log(jwt, "waht");
       if (!jwt) return;
-      console.log("past no return");
       localStorage.setItem('jwt', jwt);
       this.set('headers', {
         "Authorization": `Bearer ${localStorage.getItem("jwt")}`
@@ -232,7 +227,6 @@ function onSignIn(googleUser) {
 }
 
 window.refresh = window.setInterval(function () {
-  console.log("global refresh");
   let googleUser = gapi && gapi.auth2 && gapi.auth2.getAuthInstance() && gapi.auth2.getAuthInstance().currentUser.get();
   if (!googleUser) return;
   document.getElementsByTagName('disa-main')[0].dispatchEvent(

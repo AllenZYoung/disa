@@ -18,14 +18,61 @@ class PersonEdit extends Polymer.Element {
 
   constructor() {
     super();
+    window.ped = this;
+  }
+
+  ready() {
+    super.ready();
   }
   
   connectedCallback() {
     super.connectedCallback();
+    let self = this;
+    
+    Array.from(this.shadowRoot.querySelectorAll('paper-dropdown-menu')).forEach((elem) => {
+      elem.addEventListener('selected-item-changed', function(e) {
+        window.fea = e.target;
+        console.log(e.target.selectedItem.value);
+        if (e.target.selectedItem && e.target.selectedItem.value == 'Add Option') {
+          let addOptionDisplay = e.target.nextElementSibling;
+          addOptionDisplay.classList.remove('hidden');
+        } else {
+          let addOptionDisplay = e.target.nextElementSibling;
+          addOptionDisplay.classList.add('hidden');
+        }
+        e.stopPropagation();
+      });
+    });
   }
 
-  __getOptions(key, options) {
-    return Utils.__getOptions(key, options);
+  __addOption(e) {
+    if (!Utils.isAdmin()) {
+      alert("You are not an admin. You cannot add new options.");
+    } else {
+      window.e = e;
+    }
+    let event = Utils.__addOption(e);
+    this.dispatchEvent(event);
+    // console.log(this.options);
+    // window.pd = this;
+  //   let clonedOptions = [];
+  //   Utils.cloneObject(clonedOptions, this.options);
+  //   window.o = this.options;
+  //   let key = e.path[0].getAttribute('data-key');
+  //   for (let i = 0; i < clonedOptions.length; ++i) {
+  //     if (Utils.__key(clonedOptions[i]) == key) {
+  //       clonedOptions[i][key] = options;
+  //       break;
+  //     }
+  //   }
+  //   console.log(clonedOptions);
+  //   this.set('options.10.tribe', options);
+  //   console.log(this.options[10].tribe);
+  //   this.set('options', clonedOptions);
+  // }
+
+  // __getOptions(key, options) {
+  //   return Utils.__getOptions(key, options);
   }
 
   __getSortedOptions(key, options) {
