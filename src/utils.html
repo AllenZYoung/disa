@@ -33,6 +33,11 @@
       return [];
     }
 
+    static __getSortedOptions(key, options) {
+      let unsortedOptions = Utils.__getOptions(key, options);
+      return unsortedOptions.sort((l, r) => l.toString().toLowerCase() > r.toString().toLowerCase());
+    }
+
     static __indexOf(value, key, options) {
       return Utils.__getOptions(key, options).indexOf(value);
     }

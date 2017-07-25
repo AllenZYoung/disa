@@ -28,6 +28,10 @@ class PersonEdit extends Polymer.Element {
     return Utils.__getOptions(key, options);
   }
 
+  __getSortedOptions(key, options) {
+    return Utils.__getSortedOptions(key, options);
+  }
+
   __indexOf(value, key, options) {
     return Utils.__indexOf(value, key, options);
   }

@@ -48,7 +48,7 @@
       <paper-input name="lastName[]" label="Last Name" value="{{item.lastName}}"></paper-input>
       <paper-dropdown-menu label="Type" selected-item="{{nameType}}" selected-item-label="{{selectedNameType}}">
         <paper-listbox slot="dropdown-content" selected="[[__indexOf(item.type, 'nameType', options)]]">
-          <template is="dom-repeat" items="[[__getOptions('nameType', options)]]">
+          <template is="dom-repeat" items="[[__getSortedOptions('nameType', options)]]">
             <paper-item value="[[item]]">[[item]]</paper-item>
           </template>
         </paper-listbox>
@@ -63,7 +63,7 @@
     <h3>Biographical</h3>
     <paper-dropdown-menu label="Tribe" selected-item="{{tribe}}" selected-item-label="{{selectedTribe}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.tribe, 'tribe', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('tribe', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('tribe', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
@@ -73,7 +73,7 @@
 
     <paper-dropdown-menu label="Origin" selected-item="{{origin}}" selected-item-label="{{selectedOrigin}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.origin, 'origin', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('origin', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('origin', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
@@ -83,7 +83,7 @@
   
     <paper-dropdown-menu label="Race" selected-item="{{race}}" selected-item-label="{{selectedRace}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.race, 'race', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('race', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('race', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
@@ -93,7 +93,7 @@
 
     <paper-dropdown-menu label="Sex" selected-item="{{sex}}" selected-item-label="{{selectedSex}}">
       <paper-listbox slot="dropdown-content" selected="{{__indexOf(person.sex, 'sex', options)}}">
-        <template is="dom-repeat" items="{{__getOptions('sex', options)}}">
+        <template is="dom-repeat" items="{{__getSortedOptions('sex', options)}}">
           <paper-item value="{{item}}">[[item]]</paper-item>
         </template>
       </paper-listbox>
@@ -104,7 +104,7 @@
 
     <paper-dropdown-menu label="Vocation" selected-item="{{vocation}}" selected-item-label="{{selectedVocation}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.vocation, 'vocation', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('vocation', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('vocation', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
@@ -113,7 +113,7 @@
 
     <paper-dropdown-menu label="Type/Kind of Enslavement" selected-item="{{typeKindOfEnslavement}}" selected-item-label="{{selectedTypeKindOfEnslavement}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.typeKindOfEnslavement, 'typeKindOfEnslavement', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('typeKindOfEnslavement', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('typeKindOfEnslavement', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
@@ -126,7 +126,7 @@
 
     <paper-dropdown-menu label="Origin" selected-item="{{fatherOrigin}}" selected-item-label="{{selectedFatherOrigin}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.father.origin, 'origin', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('origin', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('origin', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
@@ -136,7 +136,7 @@
 
     <paper-dropdown-menu label="Race" selected-item="{{fatherRace}}" selected-item-label="{{selectedFatherRace}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.father.race, 'race', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('race', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('race', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
@@ -146,7 +146,7 @@
 
     <paper-dropdown-menu label="Status" selected-item="{{fatherStatus}}" selected-item-label="{{selectedFatherStatus}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.father.status, 'status', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('status', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('status', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
@@ -157,7 +157,7 @@
     <h4>Father's Owner</h4>
     <paper-dropdown-menu label="Title" selected-item="{{fatherOwnerTitle}}" selected-item-label="{{selectedFatherOwnerTitle}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.father.owner.name.title, 'title', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('title', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('title', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
@@ -168,7 +168,7 @@
 
     <paper-dropdown-menu label="Owner Vocation" selected-item="{{fatherOwnerVocation}}" selected-item-label="{{selectedFatherOwnerVocation}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.father.owner.vocation, 'ownerVocation', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('ownerVocation', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('ownerVocation', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
@@ -181,7 +181,7 @@
 
     <paper-dropdown-menu label="Origin" selected-item="{{motherOrigin}}" selected-item-label="{{selectedMotherOrigin}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.mother.origin, 'origin', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('origin', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('origin', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
@@ -191,7 +191,7 @@
 
     <paper-dropdown-menu label="Race" selected-item="{{motherRace}}" selected-item-label="{{selectedMotherRace}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.mother.race, 'race', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('race', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('race', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
@@ -201,7 +201,7 @@
 
     <paper-dropdown-menu label="Status" selected-item="{{motherStatus}}" selected-item-label="{{selectedMotherStatus}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.mother.status, 'status', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('status', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('status', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
@@ -212,7 +212,7 @@
     <h4>Mother's Owner</h4>
     <paper-dropdown-menu label="Title" selected-item="{{motherOwnerTitle}}" selected-item-label="{{selectedMotherOwnerTitle}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.mother.owner.name.title, 'title', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('title', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('title', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
@@ -223,7 +223,7 @@
 
     <paper-dropdown-menu label="Owner Vocation" selected-item="{{motherOwnerVocation}}" selected-item-label="{{selectedMotherOwnerVocation}}">
       <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.mother.owner.vocation, 'ownerVocation', options)]]">
-        <template is="dom-repeat" items="[[__getOptions('ownerVocation', options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions('ownerVocation', options)]]">
           <paper-item value="[[item]]">[[item]]</paper-item>
         </template>
       </paper-listbox>
