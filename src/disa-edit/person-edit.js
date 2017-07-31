@@ -31,8 +31,6 @@ class PersonEdit extends Polymer.Element {
     
     Array.from(this.shadowRoot.querySelectorAll('paper-dropdown-menu')).forEach((elem) => {
       elem.addEventListener('selected-item-changed', function(e) {
-        window.fea = e.target;
-        console.log(e.target.selectedItem.value);
         if (e.target.selectedItem && e.target.selectedItem.value == 'Add Option') {
           let addOptionDisplay = e.target.nextElementSibling;
           addOptionDisplay.classList.remove('hidden');
@@ -69,10 +67,10 @@ class PersonEdit extends Polymer.Element {
   //   this.set('options.10.tribe', options);
   //   console.log(this.options[10].tribe);
   //   this.set('options', clonedOptions);
-  // }
+  }
 
-  // __getOptions(key, options) {
-  //   return Utils.__getOptions(key, options);
+  __getOptions(key, options) {
+    return Utils.__getOptions(key, options);
   }
 
   __getSortedOptions(key, options) {
@@ -80,7 +78,7 @@ class PersonEdit extends Polymer.Element {
   }
 
   __indexOf(value, key, options) {
-    return Utils.__indexOf(value, key, options);
+    return Utils.__indexOf(value, key, options, true);
   }
 
   addName() {
@@ -125,7 +123,9 @@ class PersonEdit extends Polymer.Element {
     let lastNames = formData['lastName[]'];
     lastNames = Utils.makeArray(lastNames);
     let nameTypes = formData['nameType[]'];
+    // alert(nameTypes);
     nameTypes = Utils.makeArray(nameTypes);
+    // alert(nameTypes);
     // hope that they don't have different lengths
     // they shouldn't but you never know what might happen
     let names = [];

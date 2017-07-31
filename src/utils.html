@@ -38,6 +38,7 @@
       }
       returnOptions = [];
       returnOptions.push('Add Option');
+      returnOptions.push('');
       return returnOptions;
     }
 
@@ -45,11 +46,12 @@
       let clonedOptions = [];
       Utils.cloneArray(clonedOptions, options);
       let unsortedOptions = Utils.__getOptions(key, clonedOptions);
-      unsortedOptions.splice(-1);
+      unsortedOptions.splice(-2);
       let choppedUnsortedOptions = unsortedOptions;
       let choppedSortedOptions = choppedUnsortedOptions.sort((l, r) => l.toString().toLowerCase() > r.toString().toLowerCase());
       let sortedOptions = choppedSortedOptions.splice(0);
       sortedOptions.push('Add Option');
+      sortedOptions.push('');
       return sortedOptions;
     }
 
