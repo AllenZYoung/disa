@@ -98,12 +98,37 @@
 
     static isSignedIn() {
       // check local storage
-      return localStorage.getItem('jwt') != null && localStorage.getItem('jwt') != undefined;
+      return localStorage.getItem('jwt') !== null 
+      && localStorage.getItem('jwt') !== undefined
+      && localStorage.getItem('givenName') !== null 
+      && localStorage.getItem('givenName') !== undefined 
+      && localStorage.getItem('role') !== null 
+      && localStorage.getItem('role') !== undefined;
     }
 
     static isAdmin() {
       // check local storage
-      return localStorage.getItem('status') === 'Admin';
+      return localStorage.getItem('role') === 'Admin';
+    }
+
+    static clearAndSignout() {
+      localStorage.clear();
+      let auth2 = window.gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function () {
+        console.log('User signed out.');
+      });
+      return;
+    }
+
+    static validateToken(url, token, callback) {
+      let xhr = new XMLHttpRequest();
+      xhr.open('POST', url);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onload = function() {
+        let response = JSON.parse(xhr.responseText);
+        callback(response);
+      };
+      xhr.send('idtoken=' + token);
     }
   }
 </script>

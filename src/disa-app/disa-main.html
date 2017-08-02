@@ -108,31 +108,28 @@
 
     <iron-ajax
       id="getDraftAjax"
-      auto
       url="[[apiHost]]/entries/draft"
       headers="[[headers]]"
       handle-as="json"
-      last-response="{{draftEntries}}"
+      on-response="draftEntriesReceived"
       debounce-duration="300">
     </iron-ajax>
 
     <iron-ajax
       id="getInternalAjax"
-      auto
       url="[[apiHost]]/entries/internal"
       headers="[[headers]]"
       handle-as="json"
-      last-response="{{internalEntries}}"
+      on-response="internalEntriesReceived"
       debounce-duration="300">
     </iron-ajax>
 
     <iron-ajax
       id="getPublicAjax"
-      auto
       url="[[apiHost]]/entries"
       headers="[[headers]]"
       handle-as="json"
-      last-response="{{publicEntries}}"
+      on-response="publicEntriesReceived"
       debounce-duration="300">
     </iron-ajax>
 

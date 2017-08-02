@@ -7,7 +7,10 @@ class DisaMain extends Polymer.Element {
       options: {
         type: Array
       },
-      route: Object
+      route: Object,
+      draftEntries: Array,
+      internalEntries: Array,
+      publicEntries: Array
     }
   }
 
@@ -18,63 +21,24 @@ class DisaMain extends Polymer.Element {
     ]
   }
 
-  __entriesChanged(draft, internal, publicEntries) {
-    this.set('unsortedDraftEntries', draft);
-    this.set('unsortedInternalEntries', internal);
-    this.set('unsortedPublicEntries', publicEntries);
+  __entriesChanged(draftEntries, internalEntries, publicEntries) {
+    // this.set('unsortedDraftEntries', draftEntries);
+    // this.set('unsortedInternalEntries', internalEntries);
+    // this.set('unsortedPublicEntries', publicEntries);
   }
 
   constructor() {
     super();
-    console.log("constructor");
     let self = this;
-
-    // let googleUser = gapi && gapi.auth2 && gapi.auth2.getAuthInstance() && gapi.auth2.getAuthInstance().currentUser.get();
-    // if (googleUser) {
-    //   googleUser.reloadAuthResponse();
-    // }
-    // if (googleUser && googleUser.Zi && googleUser.Zi.id_token) {
-    //   localStorage.setItem('jwt', googleUser.Zi.id_token);
-    //   self.set('headers', {
-    //     "Authorization": `Bearer ${localStorage.getItem("jwt")}`
-    //   });
-    // }
     
     // defaults
-    this.set('signedIn', Utils.isSignedIn());
-    this.set('apiHost', "http://api.disa.forkinthecode.com");
-
-    if (this.signedIn) {
-      // check local storage for customization
-      // signed in check
-      let jwt = localStorage.getItem('jwt');
-
-      this.set('givenName', localStorage.getItem('givenName'));
-
-      this.set('headers', {
-        "Authorization": `Bearer ${localStorage.getItem("jwt")}`
-      });
-
-      if (window.location.hash == "" || window.location.hash == "#" || window.location.hash == "#/") {
-        this.set('route.path', '/dashboard');
-      }
-    } else {
-      let auth2 = gapi.auth2.getAuthInstance();
-      auth2.signOut().then(function () {
-        console.log('User signed out.');
-      });
-    }
+    this.set('apiHost', "http://cole-mint:8080");
 
     // event listeners
     this.addEventListener('sign-in', function(e) {
       e.preventDefault();
-      self.onSignIn(e.detail.googleUser);
-      return false;
-    });
-
-    this.addEventListener('refresh', function(e) {
-      e.preventDefault();
-      self.refresh(e.detail.googleUser);
+      console.log("local signin");
+      self.onSignIn(e.detail.jwt, e.detail.response);
       return false;
     });
 
@@ -116,125 +80,180 @@ class DisaMain extends Polymer.Element {
 
     this.addEventListener('reload-needed', function(e) {
       e.preventDefault();
-      this.$.getDraftAjax.generateRequest();
-      this.$.getInternalAjax.generateRequest();
-      this.$.getPublicAjax.generateRequest();
+      this.loadEntries();
       return false;
     });
   }
 
   connectedCallback() {
     super.connectedCallback();
-    // // this.setAttribute('active', true);
-    // console.log("cc");
-    // this.setAttribute('active', true);
-    
+
+    this.set('signedIn', Utils.isSignedIn());
+
+    let self = this;
+    if (this.signedIn) {
+      // validate token
+      let jwt = localStorage.getItem('jwt');
+      Utils.validateToken(this.apiHost + '/signin', jwt, function(validTokenResponse) {
+        if (validTokenResponse.error) {
+          this.onSignOut();
+        } else {
+          self.successfulSignin();
+          self.startRefresh(validTokenResponse);
+          self.loadEntries();
+        }
+        return;
+      });
+    } else {
+      this.onSignOut();
+    }
+  }
+
+  draftEntriesReceived(e) {
+    let response = e.detail.response;
+    if (!response) {
+      alert("Oh no! Something terrible went wrong. Stop all work and inform Cole ASAP!");
+    } else if (response.error) {
+      alert(response.error);
+    } else {
+      this.set('draftEntries', response);
+    }
+  }
+
+  internalEntriesReceived(e) {
+    let response = e.detail.response;
+    if (!response) {
+      alert("Oh no! Something terrible went wrong. Stop all work and inform Cole ASAP!");
+    } else if (response.error) {
+      alert(response.error);
+    } else {
+      this.set('internalEntries', response);
+    }
+  }
+
+  publicEntriesReceived(e) {
+    let response = e.detail.response;
+    if (!response) {
+      alert("Oh no! Something terrible went wrong. Stop all work and inform Cole ASAP!");
+    } else if (response.error) {
+      alert(response.error);
+    } else {
+      this.set('publicEntries', response);
+    }
   }
 
   __routeChanged(route) {
-    if (this.signedIn && route && (route.path == '' || route.path == '/')) {
+    if (!Utils.isSignedIn()) {
+      this.onSignOut();
+      return;
+    }
+    if (this.isInvalidRoute(route)) {
       this.set('route.path', '/dashboard');
     }
-    if (route && (route.path == '/admin' ||  route.path.startsWith('/edit'))) {
+    if (route && (route.path == '/admin' || route.path.startsWith('/edit'))) {
       this.$.getOptionsAjax.generateRequest();
     }
   }
 
+  loadEntries() {
+    this.$.getDraftAjax.generateRequest();
+    this.$.getInternalAjax.generateRequest();
+    this.$.getPublicAjax.generateRequest();
+  }
+
   // BEGIN Auth
-  onSignIn(googleUser) {
+  onSignIn(jwt, response) {
     this.set('signedIn', true);
-    this.refresh(googleUser);
+    localStorage.setItem('jwt', jwt);
+    localStorage.setItem('role', response.role);
+    localStorage.setItem('givenName', response.givenName);
+    this.successfulSignin();
+    this.startRefresh(response);
+    this.loadEntries();
+  }
+
+  successfulSignin() {
+    this.set('givenName', localStorage.getItem('givenName'));
+
+    this.set('headers', {
+      "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+    });
+
+    if (this.isInvalidRoute(this.route)) {
+      this.set('route.path', '/dashboard');
+    }
+  }
+
+  startRefresh(response) {
+    let initialTimeout = (response.payload.exp * 1000 - new Date()) - (1000 * 60);
+    if (initialTimeout < 1000 * 60 * 10000) {
+      initialTimeout = 0;
+    }
+    let self = this;
+    window.setTimeout(function() {
+      self.refresh = window.setInterval(function() {
+        console.log("refreshing");
+        let googleUser = gapi && gapi.auth2 && gapi.auth2.getAuthInstance() && gapi.auth2.getAuthInstance().currentUser.get();
+        if (!googleUser) {
+          console.error("No google");
+          return;
+        }
+        googleUser.reloadAuthResponse()
+        self.refreshed(googleUser);
+      }, 4000); // * 60 * 55
+    }, initialTimeout); 
+  }
+
+  refreshed(googleUser) {
+    localStorage.setItem('jwt', googleUser.getAuthResponse().id_token);
+    this.successfulSignin();
+  }
+
+  stopRefresh() {
+    this.refresh && window.clearInterval(this.refresh);
   }
 
   onSignOut() {
     this.set('signedIn', false);
-    // window.clearInterval(window.refresh);
-    localStorage.clear();
-    let auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      console.log('User signed out.');
-    });
-  }
-
-  refresh(googleUser) {
-    try {
-      googleUser.reloadAuthResponse();
-      const jwt = googleUser.getAuthResponse().id_token;
-      let xhr = new XMLHttpRequest();
-      xhr.open('POST', `http://api.disa.forkinthecode.com/tokensignin`);
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      xhr.onload = function() {
-        let response = JSON.parse(xhr.responseText);
-        if (response.error) {
-          return;
-        }
-        
-        localStorage.setItem('status', response.status);
-        localStorage.setItem('givenName', response.givenName);
-      };
-      xhr.send('idtoken=' + jwt);
-      if (!jwt) return;
-      localStorage.setItem('jwt', jwt);
-      this.set('headers', {
-        "Authorization": `Bearer ${localStorage.getItem("jwt")}`
-      });
-
-      this.set('signedIn', Utils.isSignedIn());
-
-      if (Utils.isSignedIn() && (this.route.path == '' || this.route.path == '/')) {
-        this.set('route.path', '/dashboard');
-      }
-    } catch (e) {
-      return;
-    }
+    this.stopRefresh();
+    Utils.clearAndSignout();
+    this.set('route.path', '/');
   }
   // END auth
+
+  isInvalidRoute(route) {
+    return route &&
+      route.path !== '/dashboard' &&
+      route.path !== '/admin' &&
+      !route.path.startsWith('/edit');
+  }
 }
 
 window.customElements.define(DisaMain.is, DisaMain);
 
 // export the onSignIn method into global space
 function onSignIn(googleUser) {
-  console.log("global sign in");
   let id_token = googleUser.getAuthResponse().id_token;
   let xhr = new XMLHttpRequest();
-  xhr.open('POST', `http://api.disa.forkinthecode.com/tokensignin`);
+  xhr.open('POST', `http://cole-mint:8080/signin`);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onload = function() {
     let response = JSON.parse(xhr.responseText);
     if (response.error) {
-      alert("There was an error signing in. Please try again.");
+      alert(response.error);
+      return;
+    } else {
+      document.getElementsByTagName('disa-main')[0].dispatchEvent(
+        new CustomEvent('sign-in', {
+          bubbles: false,
+          detail: {
+            jwt: id_token,
+            response: response
+          }
+        })
+      );
       return;
     }
-    
-    localStorage.setItem('status', response.status);
-    localStorage.setItem('givenName', response.givenName);
-
-    document.getElementsByTagName('disa-main')[0].dispatchEvent(
-      new CustomEvent('sign-in', {
-        bubbles: false,
-        detail: {
-          googleUser: googleUser
-        }
-      })
-    );
-
-    window.history.pushState({}, null, '/#/dashboard');
-    window.dispatchEvent(new CustomEvent('location-changed'));
-    window.scrollTo(0,0);
   };
   xhr.send('idtoken=' + id_token);
 }
-
-window.refresh = window.setInterval(function () {
-  let googleUser = gapi && gapi.auth2 && gapi.auth2.getAuthInstance() && gapi.auth2.getAuthInstance().currentUser.get();
-  if (!googleUser) return;
-  document.getElementsByTagName('disa-main')[0].dispatchEvent(
-    new CustomEvent('refresh', {
-      bubbles: false,
-      detail: {
-        googleUser: googleUser
-      }
-    })
-  );
-}, (10) * 1000);
