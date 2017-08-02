@@ -138,19 +138,19 @@
       url="[[apiHost]]/options"
       headers="[[headers]]"
       handle-as="json"
-      last-response="{{options}}"
+      on-response="optionsReceived"
       debounce-duration="300">
     </iron-ajax>
 
     <iron-ajax
       id="saveOptionsAjax"
       method="PUT"
-      url="[[apiHost]]/options/[[optionsName]]"
+      url="[[apiHost]]/options/[[newOptionsName]]"
       headers="[[headers]]"
       content-type="application/json"
       body="[[newOptions]]"
       handle-as="json"
-      last-response="{{saveOptions}}"
+      on-response="saveOptionsResponseReceived"
       debounce-duration="300">
     </iron-ajax>
 

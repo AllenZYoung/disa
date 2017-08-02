@@ -4,9 +4,9 @@ class DisaMain extends Polymer.Element {
 
   get properties() {
     return {
-      options: {
-        type: Array
-      },
+      options: Array,
+      newOptions: Array,
+      newOptionsName: String,
       route: Object,
       draftEntries: Array,
       internalEntries: Array,
@@ -37,7 +37,6 @@ class DisaMain extends Polymer.Element {
     // event listeners
     this.addEventListener('sign-in', function(e) {
       e.preventDefault();
-      console.log("local signin");
       self.onSignIn(e.detail.jwt, e.detail.response);
       return false;
     });
@@ -48,7 +47,6 @@ class DisaMain extends Polymer.Element {
       return false;
     });
 
-    window.t = this;
     this.addEventListener('save-options', function(e) {
       // this check probably won't happen any more, because the entire admin page is behind a similar check
       if (!Utils.isAdmin()) {
@@ -57,25 +55,10 @@ class DisaMain extends Polymer.Element {
         return;
       }
       let newOptions = e.detail.options;
-      console.log(newOptions);
-      // TODO: do this after success response
-      let clonedOptions = [];
-      Utils.cloneArray(clonedOptions, self.options);
-
-      let key = e.detail.key;
-      for (let i = 0; i < clonedOptions.length; ++i) {
-        if (Utils.__key(clonedOptions[i]) == key) {
-          clonedOptions[i][key] = newOptions;
-          break;
-        }
-      }
-      console.log(clonedOptions);
-      this.set('options', clonedOptions);
-
-      this.set('optionsName', key);
       this.set('newOptions', newOptions);
+      this.set('newOptionsName', e.detail.key);
 
-      this.$.saveOptionsAjax.generateRequest();
+      this.$.saveOptionsAjax.generateRequest(); 
     });
 
     this.addEventListener('reload-needed', function(e) {
@@ -107,6 +90,8 @@ class DisaMain extends Polymer.Element {
     } else {
       this.onSignOut();
     }
+
+    this.$.getOptionsAjax.generateRequest();
   }
 
   draftEntriesReceived(e) {
@@ -139,6 +124,36 @@ class DisaMain extends Polymer.Element {
       alert(response.error);
     } else {
       this.set('publicEntries', response);
+    }
+  }
+
+  optionsReceived(e) {
+    let response = e.detail.response;
+    if (!response) {
+      alert("Oh no! Something terrible went wrong. Stop all work and inform Cole ASAP!");
+    } else if (response.error) {
+      alert(response.error);
+    } else {
+      this.set('options', response);
+    }
+  }
+
+  saveOptionsResponseReceived(e) {
+    let response = e.detail.response;
+    if (!response) {
+      let clonedOptions = [];
+      Utils.cloneArray(clonedOptions, this.options);
+
+      let key = this.newOptionsName;
+      for (let i = 0; i < clonedOptions.length; ++i) {
+        if (Utils.__key(clonedOptions[i]) == key) {
+          clonedOptions[i][key] = this.newOptions;
+          break;
+        }
+      }
+      this.set('options', clonedOptions);
+    } else {
+      alert(response.error);
     }
   }
 
@@ -192,7 +207,6 @@ class DisaMain extends Polymer.Element {
     let self = this;
     window.setTimeout(function() {
       self.refresh = window.setInterval(function() {
-        console.log("refreshing");
         let googleUser = gapi && gapi.auth2 && gapi.auth2.getAuthInstance() && gapi.auth2.getAuthInstance().currentUser.get();
         if (!googleUser) {
           console.error("No google");
@@ -200,7 +214,7 @@ class DisaMain extends Polymer.Element {
         }
         googleUser.reloadAuthResponse()
         self.refreshed(googleUser);
-      }, 4000); // * 60 * 55
+      }, 1000 * 60 * 55);
     }, initialTimeout); 
   }
 
