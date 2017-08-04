@@ -7,7 +7,10 @@ class PersonEdit extends Polymer.Element {
       person: {
         type: Object
       },
-      sex: Object
+      options: {
+        type: Array,
+        notify: true
+      }
     };
   }
 
@@ -18,7 +21,6 @@ class PersonEdit extends Polymer.Element {
 
   constructor() {
     super();
-    window.ped = this;
   }
 
   ready() {
@@ -27,46 +29,10 @@ class PersonEdit extends Polymer.Element {
   
   connectedCallback() {
     super.connectedCallback();
-    let self = this;
-    
-    Array.from(this.shadowRoot.querySelectorAll('paper-dropdown-menu')).forEach((elem) => {
-      elem.addEventListener('selected-item-changed', function(e) {
-        if (e.target.selectedItem && e.target.selectedItem.value == 'Add Option') {
-          let addOptionDisplay = e.target.nextElementSibling;
-          addOptionDisplay.classList.remove('hidden');
-        } else {
-          let addOptionDisplay = e.target.nextElementSibling;
-          addOptionDisplay.classList.add('hidden');
-        }
-        e.stopPropagation();
-      });
-    });
   }
 
-  __addOption(e) {
-    if (!Utils.isAdmin()) {
-      alert("You are not an admin. You cannot add new options.");
-    } else {
-      window.e = e;
-    }
-    let event = Utils.__addOption(e);
-    this.dispatchEvent(event);
-    // console.log(this.options);
-    // window.pd = this;
-  //   let clonedOptions = [];
-  //   Utils.cloneObject(clonedOptions, this.options);
-  //   window.o = this.options;
-  //   let key = e.path[0].getAttribute('data-key');
-  //   for (let i = 0; i < clonedOptions.length; ++i) {
-  //     if (Utils.__key(clonedOptions[i]) == key) {
-  //       clonedOptions[i][key] = options;
-  //       break;
-  //     }
-  //   }
-  //   console.log(clonedOptions);
-  //   this.set('options.10.tribe', options);
-  //   console.log(this.options[10].tribe);
-  //   this.set('options', clonedOptions);
+  __isAdmin() {
+    return Utils.isAdmin();
   }
 
   __getOptions(key, options) {
@@ -97,14 +63,10 @@ class PersonEdit extends Polymer.Element {
   }
 
   addChild() {
-    console.log("adding child");
-    console.log(this.person.children);
     let newChildren = [];
     Utils.cloneArray(newChildren, this.person.children);
     newChildren.push(new Child());
-    console.log(newChildren);
     this.set('person.children', newChildren);
-    console.log(this.person.children);
   }
 
   removeChild(e) {
@@ -115,6 +77,12 @@ class PersonEdit extends Polymer.Element {
     this.set('person.children', newChildren);
   }
 
+  resetDropdown() {
+    this.shadowRoot.querySelectorAll("dropdown-edit").forEach((elem) => {
+      elem.resetDropdown();
+    });
+  }
+
   createFromData(formData) {
     let person = new Person();
     
@@ -123,9 +91,7 @@ class PersonEdit extends Polymer.Element {
     let lastNames = formData['lastName[]'];
     lastNames = Utils.makeArray(lastNames);
     let nameTypes = formData['nameType[]'];
-    // alert(nameTypes);
     nameTypes = Utils.makeArray(nameTypes);
-    // alert(nameTypes);
     // hope that they don't have different lengths
     // they shouldn't but you never know what might happen
     let names = [];
@@ -252,7 +218,6 @@ class PersonEdit extends Polymer.Element {
     childLastNames = Utils.makeArray(childLastNames);
     // hope that they don't have different lengths
     // they shouldn't but you never know what might happen
-    console.log(childFirstNames, childLastNames);
     for (let i = 0; i < childFirstNames.length; ++i) {
       let child = new Child();
 

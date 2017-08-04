@@ -37,7 +37,6 @@ class OwnerEdit extends Polymer.Element {
 
   addName() {
     let newNames = [];
-    console.log(this.owner);
     Utils.cloneArray(newNames, this.owner.names);
     newNames.push(new OwnerName());
     this.set('owner.names', newNames);

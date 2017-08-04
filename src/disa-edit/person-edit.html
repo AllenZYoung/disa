@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
@@ -6,6 +7,9 @@
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../utils.html">
+
+<link rel="import" href="./dropdown-edit.html">
 
 <dom-module id="person-edit">
   <template>
@@ -48,259 +52,84 @@
 
     <h3>Name(s)</h3>
     <template is="dom-repeat" items="[[person.names]]">
-      <paper-input name="firstName[]" label="First Name" value="{{item.firstName}}"></paper-input>
-      <paper-input name="lastName[]" label="Last Name" value="{{item.lastName}}"></paper-input>
-      <paper-dropdown-menu label="Type" selected-item="{{nameType}}" selected-item-label="{{selectedNameType}}">
-        <paper-listbox slot="dropdown-content" selected="[[__indexOf(item.type, 'nameType', options)]]">
-          <template is="dom-repeat" items="[[__getSortedOptions('nameType', options)]]">
-            <paper-item value="[[item]]">[[item]]</paper-item>
-          </template>
-        </paper-listbox>
-      </paper-dropdown-menu>
-      <div id="nameTypeOptions" data-key="nameType" class="hidden">
-        <paper-input name="newNameTypeOption" label="New Option"></paper-input>
-        <paper-button raised on-click="__addOption" data-key="nameType">Add Option</paper-button>
-      </div>
-      <input name="nameType[]" type="hidden" value$="[[nameType.value]]" />
-
-      <paper-button on-click="removeName" data-property="names" data-index="[[index]]" raised>Remove Name</paper-button>
+      <section style="border-left: 0.1rem #000 solid; padding-left: 0.6rem;">
+        <paper-input name="firstName[]" label="First Name" value="{{item.firstName}}"></paper-input>
+        <paper-input name="lastName[]" label="Last Name" value="{{item.lastName}}"></paper-input>
+        <dropdown-edit label="Type" item="{{item.type}}" value="{{item.type}}" key="nameType" options="{{options}}"></dropdown-edit>
+        <paper-button on-click="removeName" data-property="names" data-index="[[index]]" raised>Remove Name</paper-button>
+        <input type="hidden" name="nameType[]" value="[[item.type]]"></input>
+      </section>
+      <hr />
     </template>
     <p><paper-button raised on-click="addName">Add Name</paper-button></p>
     <br>
 
     <h3>Biographical</h3>
-    <paper-dropdown-menu label="Tribe" selected-item="{{tribe}}" selected-item-label="{{selectedTribe}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.tribe, 'tribe', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('tribe', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <div id="tribeOptions" data-key="tribe" class="hidden">
-      <paper-input name="newTribeOption" label="New Option"></paper-input>
-      <paper-button raised on-click="__addOption" data-key="tribe">Add Option</paper-button>
-    </div> 
-    <input name="tribe" type="hidden" value$="[[tribe.value]]" />
+    <dropdown-edit label="Tribe" item="{{person.tribe}}" value="{{person.tribe}}" key="tribe" options="{{options}}"></dropdown-edit>
+    <input name="tribe" type="hidden" value="[[person.tribe]]" />
     <br>
 
-    <paper-dropdown-menu label="Origin" selected-item="{{origin}}" selected-item-label="{{selectedOrigin}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.origin, 'origin', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('origin', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <div id="originOptions" data-key="origin" class="hidden">
-      <paper-input name="newOriginOption" label="New Option"></paper-input>
-      <paper-button raised on-click="__addOption" data-key="origin">Add Option</paper-button>
-    </div>
-    <input name="origin" type="hidden" value$="[[origin.value]]" />
-    <br>  
-  
-    <paper-dropdown-menu label="Race" selected-item="{{race}}" selected-item-label="{{selectedRace}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.race, 'race', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('race', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <div id="raceOptions" data-key="race" class="hidden">
-      <paper-input name="newRaceOption" label="New Option"></paper-input>
-      <paper-button raised on-click="__addOption" data-key="race">Add Option</paper-button>
-    </div>
-    <input name="race" type="hidden" value$="[[race.value]]" />
+    <dropdown-edit label="Origin" item="{{person.origin}}" value="{{person.origin}}" key="origin" options="{{options}}"></dropdown-edit>
+    <input name="origin" type="hidden" value="[[person.origin]]" />
     <br>
 
-    <paper-dropdown-menu label="Sex" selected-item="{{sex}}" selected-item-label="{{selectedSex}}">
-      <paper-listbox slot="dropdown-content" selected="{{__indexOf(person.sex, 'sex', options)}}">
-        <template is="dom-repeat" items="{{__getSortedOptions('sex', options)}}">
-          <paper-item value="{{item}}">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <div id="sexOptions" data-key="sex" class="hidden">
-      <paper-input name="newSexOption" label="New Option"></paper-input>
-      <paper-button raised on-click="__addOption" data-key="sex">Add Option</paper-button>
-    </div>
-    <input name="sex" type="hidden" value$="{{sex.value}}" />
+    <dropdown-edit label="Race" item="{{person.race}}" value="{{person.race}}" key="race" options="{{options}}"></dropdown-edit>
+    <input name="race" type="hidden" value="[[person.race]]" />
+
+    <dropdown-edit label="Sex" item="{{person.sex}}" value="{{person.sex}}" key="sex" options="{{options}}"></dropdown-edit>
+    <input name="sex" type="hidden" value="[[person.sex]]" />
 
     <paper-input name="age" label="Age" value="[[person.age]]"></paper-input>
 
-    <paper-dropdown-menu label="Vocation" selected-item="{{vocation}}" selected-item-label="{{selectedVocation}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.vocation, 'vocation', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('vocation', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <div id="vocationOptions" data-key="vocation" class="hidden">
-      <paper-input name="newVocationOption" label="New Option"></paper-input>
-      <paper-button raised on-click="__addOption" data-key="vocation">Add Option</paper-button>
-    </div>
-    <input name="vocation" type="hidden" value$="[[vocation.value]]" />
+    <dropdown-edit label="Vocation" item="{{person.vocation}}" value="{{person.vocation}}" key="vocation" options="{{options}}"></dropdown-edit>
+    <input name="vocation" type="hidden" value="[[person.vocation]]" />
 
-    <paper-dropdown-menu label="Type/Kind of Enslavement" selected-item="{{typeKindOfEnslavement}}" selected-item-label="{{selectedTypeKindOfEnslavement}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.typeKindOfEnslavement, 'typeKindOfEnslavement', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('typeKindOfEnslavement', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <div id="typeKindOfEnslavementOptions" data-key="typeKindOfEnslavement" class="hidden">
-      <paper-input name="newTypeKindOfEnslavementOption" label="New Option"></paper-input>
-      <paper-button raised on-click="__addOption" data-key="typeKindOfEnslavement">Add Option</paper-button>
-    </div>
-    <input name="typeKindOfEnslavement" type="hidden" value$="[[typeKindOfEnslavement.value]]" />
+    <dropdown-edit label="Type/Kind of Enslavement" item="{{person.typeKindOfEnslavement}}" value="{{person.typeKindOfEnslavement}}" key="typeKindOfEnslavement" options="{{options}}"></dropdown-edit>
+    <input name="typeKindOfEnslavement" type="hidden" value="[[person.typeKindOfEnslavement]]" />
 
     <h3>Father</h3>
     <paper-input name="fatherFirstName" label="First Name" value="{{person.father.name.firstName}}"></paper-input>
     <paper-input name="fatherLastName" label="Last Name" value="{{person.father.name.lastName}}"></paper-input>
 
-    <paper-dropdown-menu label="Origin" selected-item="{{fatherOrigin}}" selected-item-label="{{selectedFatherOrigin}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.father.origin, 'origin', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('origin', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <div id="originOptions" data-key="origin" class="hidden">
-      <paper-input name="newOriginOption" label="New Option"></paper-input>
-      <paper-button raised on-click="__addOption" data-key="origin">Add Option</paper-button>
-    </div>
-    <input name="fatherOrigin" type="hidden" value$="[[origin.value]]" />
-    <br>
+    <dropdown-edit label="Origin" item="{{person.father.origin}}" value="{{person.father.origin}}" key="origin" options="{{options}}"></dropdown-edit>
+    <input name="fatherOrigin" type="hidden" value="[[person.father.origin]]" />
 
-    <paper-dropdown-menu label="Race" selected-item="{{fatherRace}}" selected-item-label="{{selectedFatherRace}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.father.race, 'race', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('race', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <div id="raceOptions" data-key="race" class="hidden">
-      <paper-input name="newRaceOption" label="New Option"></paper-input>
-      <paper-button raised on-click="__addOption" data-key="race">Add Option</paper-button>
-    </div>
-    <input name="fatherRace" type="hidden" value$="[[fatherRace.value]]" />
-    <br>
+    <dropdown-edit label="Race" item="{{person.father.race}}" value="{{person.father.race}}" key="race" options="{{options}}"></dropdown-edit>
+    <input name="fatherRace" type="hidden" value="[[person.father.race]]" />
 
-    <paper-dropdown-menu label="Status" selected-item="{{fatherStatus}}" selected-item-label="{{selectedFatherStatus}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.father.status, 'status', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('status', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <div id="statusOptions" data-key="status" class="hidden">
-      <paper-input name="newStatusOption" label="New Option"></paper-input>
-      <paper-button raised on-click="__addOption" data-key="status">Add Option</paper-button>
-    </div>
-    <input name="fatherStatus" type="hidden" value$="[[fatherStatus.value]]" />
-    <br>
+    <dropdown-edit label="Status" item="{{person.father.status}}" value="{{person.father.status}}" key="status" options="{{options}}"></dropdown-edit>
+    <input name="fatherStatus" type="hidden" value="[[person.father.status]]" />
 
     <h4>Father's Owner</h4>
-    <paper-dropdown-menu label="Title" selected-item="{{fatherOwnerTitle}}" selected-item-label="{{selectedFatherOwnerTitle}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.father.owner.name.title, 'title', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('title', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <div id="titleOptions" data-key="title" class="hidden">
-      <paper-input name="newTitleOption" label="New Option"></paper-input>
-      <paper-button raised on-click="__addOption" data-key="title">Add Option</paper-button>
-    </div>
-    <input name="fatherOwnerTitle" type="hidden" value$="[[fatherOwnerTitle.value]]" />
+    <dropdown-edit label="Title" item="{{person.father.owner.name.title}}" value="{{person.father.owner.name.title}}" key="title" options="{{options}}"></dropdown-edit>
+    <input name="fatherOwnerTitle" type="hidden" value="[[person.father.owner.name.title]]" />
     <paper-input name="fatherOwnerFirstName" label="First Name" value="{{person.father.owner.name.firstName}}"></paper-input>
     <paper-input name="fatherOwnerLastName" label="Last Name" value="{{person.father.owner.name.lastName}}"></paper-input>
 
-    <paper-dropdown-menu label="Owner Vocation" selected-item="{{fatherOwnerVocation}}" selected-item-label="{{selectedFatherOwnerVocation}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.father.owner.vocation, 'ownerVocation', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('ownerVocation', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <div id="ownerVocationOptions" data-key="ownerVocation" class="hidden">
-      <paper-input name="newOwnerVocationOption" label="New Option"></paper-input>
-      <paper-button raised on-click="__addOption" data-key="ownerVocation">Add Option</paper-button>
-    </div>
-    <input name="fatherOwnerVocation" type="hidden" value$="[[fatherOwnerVocation.value]]" />
+    <dropdown-edit label="Owner Vocation" item="{{person.father.owner.vocation}}" value="{{person.father.owner.vocation}}" key="ownerVocation" options="{{options}}"></dropdown-edit>
+    <input name="fatherOwnerVocation" type="hidden" value="[[person.father.owner.vocation]]" />
 
     <h3>Mother</h3>
     <paper-input name="motherFirstName" label="First Name" value="{{person.mother.name.firstName}}"></paper-input>
     <paper-input name="motherLastName" label="Last Name" value="{{person.mother.name.lastName}}"></paper-input>
 
-    <paper-dropdown-menu label="Origin" selected-item="{{motherOrigin}}" selected-item-label="{{selectedMotherOrigin}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.mother.origin, 'origin', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('origin', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <div id="originOptions" data-key="origin" class="hidden">
-      <paper-input name="newOriginOption" label="New Option"></paper-input>
-      <paper-button raised on-click="__addOption" data-key="origin">Add Option</paper-button>
-    </div>
-    <input name="motherOrigin" type="hidden" value$="[[origin.value]]" />
-    <br>
+    <dropdown-edit label="Origin" item="{{person.mother.origin}}" value="{{person.mother.origin}}" key="origin" options="{{options}}"></dropdown-edit>
+    <input name="motherOrigin" type="hidden" value="[[person.mother.origin]]" />
 
-    <paper-dropdown-menu label="Race" selected-item="{{motherRace}}" selected-item-label="{{selectedMotherRace}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.mother.race, 'race', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('race', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <div id="raceOptions" data-key="race" class="hidden">
-      <paper-input name="newRaceOption" label="New Option"></paper-input>
-      <paper-button raised on-click="__addOption" data-key="race">Add Option</paper-button>
-    </div>
-    <input name="motherRace" type="hidden" value$="[[motherRace.value]]" />
-    <br>
+    <dropdown-edit label="Race" item="{{person.mother.race}}" value="{{person.mother.race}}" key="race" options="{{options}}"></dropdown-edit>
+    <input name="motherRace" type="hidden" value="[[person.mother.race]]" />
 
-    <paper-dropdown-menu label="Status" selected-item="{{motherStatus}}" selected-item-label="{{selectedMotherStatus}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.mother.status, 'status', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('status', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <div id="statusOptions" data-key="status" class="hidden">
-      <paper-input name="newStatusOption" label="New Option"></paper-input>
-      <paper-button raised on-click="__addOption" data-key="status">Add Option</paper-button>
-    </div>
-    <input name="motherStatus" type="hidden" value$="[[motherStatus.value]]" />
-    <br>
-
+    <dropdown-edit label="Status" item="{{person.mother.status}}" value="{{person.mother.status}}" key="status" options="{{options}}"></dropdown-edit>
+    <input name="motherStatus" type="hidden" value="[[person.mother.status]]" />
+    
     <h4>Mother's Owner</h4>
-    <paper-dropdown-menu label="Title" selected-item="{{motherOwnerTitle}}" selected-item-label="{{selectedMotherOwnerTitle}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.mother.owner.name.title, 'title', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('title', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <div id="titleOptions" data-key="title" class="hidden">
-      <paper-input name="newTitleOption" label="New Option"></paper-input>
-      <paper-button raised on-click="__addOption" data-key="title">Add Option</paper-button>
-    </div>
-    <input name="motherOwnerTitle" type="hidden" value$="[[motherOwnerTitle.value]]" />
+    <dropdown-edit label="Title" item="{{person.mother.owner.name.title}}" value="{{person.mother.owner.name.title}}" key="title" options="{{options}}"></dropdown-edit>
+    <input name="motherOwnerTitle" type="hidden" value="[[person.mother.owner.name.title]]" />
     <paper-input name="motherOwnerFirstName" label="First Name" value="{{person.mother.owner.name.firstName}}"></paper-input>
     <paper-input name="motherOwnerLastName" label="Last Name" value="{{person.mother.owner.name.lastName}}"></paper-input>
 
-    <paper-dropdown-menu label="Owner Vocation" selected-item="{{motherOwnerVocation}}" selected-item-label="{{selectedMotherOwnerVocation}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(person.mother.owner.vocation, 'ownerVocation', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('ownerVocation', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <div id="ownerVocationOptions" data-key="ownerVocation" class="hidden">
-      <paper-input name="newOwnerVocationOption" label="New Option"></paper-input>
-      <paper-button raised on-click="__addOption" data-key="ownerVocation">Add Option</paper-button>
-    </div>
-    <input name="motherOwnerVocation" type="hidden" value$="[[motherOwnerVocation.value]]" />
+    <dropdown-edit label="Owner Vocation" item="{{person.mother.owner.vocation}}" value="{{person.mother.owner.vocation}}" key="ownerVocation" options="{{options}}"></dropdown-edit>
+    <input name="motherOwnerVocation" type="hidden" value="[[person.mother.owner.vocation]]" />
 
     <h3>Children</h3>
     <template is="dom-repeat" items="[[person.children]]">

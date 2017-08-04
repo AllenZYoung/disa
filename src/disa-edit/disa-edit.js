@@ -11,6 +11,10 @@ class DisaEdit extends Polymer.Element {
       active: Boolean,
       saveResponse: {
         type: Object
+      },
+      options: {
+        type: Array,
+        notify: true
       }
     };
   }
@@ -26,7 +30,6 @@ class DisaEdit extends Polymer.Element {
 
   constructor() {
     super();
-    window.q = this;
   }
   
   connectedCallback() {
@@ -90,6 +93,18 @@ class DisaEdit extends Polymer.Element {
   }
 
   save() {
+    for (let option of this.options) {
+      this.dispatchEvent( 
+        new CustomEvent('save-options', {
+          bubble: true,
+          composed: true,
+          detail: {
+            options: Object.values(option)[0],
+            key: Object.keys(option)[0]
+          }
+        })
+      );
+    }
     this.__stageAction = 'save';
     this.prepareForm();
   }
@@ -113,6 +128,7 @@ class DisaEdit extends Polymer.Element {
 
     let person = this.$.person.createFromData(formData);
     body.person = person;
+    this.$.person.resetDropdown();
 
     let owner = this.$.owner.createFromData(formData);
     body.owner = owner;

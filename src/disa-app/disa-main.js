@@ -55,9 +55,10 @@ class DisaMain extends Polymer.Element {
         return;
       }
       let newOptions = e.detail.options;
+      let deduppedValues = [...new Set(newOptions)];
+      newOptions = deduppedValues;
       this.set('newOptions', newOptions);
       this.set('newOptionsName', e.detail.key);
-
       this.$.saveOptionsAjax.generateRequest(); 
     });
 
@@ -79,7 +80,7 @@ class DisaMain extends Polymer.Element {
       let jwt = localStorage.getItem('jwt');
       Utils.validateToken(this.apiHost + '/signin', jwt, function(validTokenResponse) {
         if (validTokenResponse.error) {
-          this.onSignOut();
+          self.onSignOut();
         } else {
           self.successfulSignin();
           self.startRefresh(validTokenResponse);
@@ -140,14 +141,14 @@ class DisaMain extends Polymer.Element {
 
   saveOptionsResponseReceived(e) {
     let response = e.detail.response;
-    if (!response) {
+    if (!response.error) {
       let clonedOptions = [];
       Utils.cloneArray(clonedOptions, this.options);
 
-      let key = this.newOptionsName;
+      let key = response.optionsName;
       for (let i = 0; i < clonedOptions.length; ++i) {
         if (Utils.__key(clonedOptions[i]) == key) {
-          clonedOptions[i][key] = this.newOptions;
+          clonedOptions[i][key] = response.options;
           break;
         }
       }
@@ -201,20 +202,22 @@ class DisaMain extends Polymer.Element {
 
   startRefresh(response) {
     let initialTimeout = (response.payload.exp * 1000 - new Date()) - (1000 * 60);
-    if (initialTimeout < 1000 * 60 * 10000) {
+    if (initialTimeout < 1000 * 60) {
       initialTimeout = 0;
     }
     let self = this;
+    let refresh = function() {
+      let googleUser = gapi && gapi.auth2 && gapi.auth2.getAuthInstance() && gapi.auth2.getAuthInstance().currentUser.get();
+      if (!googleUser) {
+        console.error("No google");
+        return;
+      }
+      googleUser.reloadAuthResponse()
+      self.refreshed(googleUser);
+    }
     window.setTimeout(function() {
-      self.refresh = window.setInterval(function() {
-        let googleUser = gapi && gapi.auth2 && gapi.auth2.getAuthInstance() && gapi.auth2.getAuthInstance().currentUser.get();
-        if (!googleUser) {
-          console.error("No google");
-          return;
-        }
-        googleUser.reloadAuthResponse()
-        self.refreshed(googleUser);
-      }, 1000 * 60 * 55);
+      refresh();
+      self.refresh = window.setInterval(refresh, 1000 * 60 * 55);
     }, initialTimeout); 
   }
 

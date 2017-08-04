@@ -7,6 +7,8 @@
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 
+<link rel="import" href="./dropdown-edit.html">
+
 <dom-module id="owner-edit">
   <template>
     <style>
@@ -41,25 +43,13 @@
     </style>
 
     <h3>Owner</h3>
-    <paper-dropdown-menu label="Title" selected-item="{{title}}" selected-item-label="{{selectedTitle}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(owner.name.title, 'title', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('title', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <input name="title" type="hidden" value$="[[title.value]]" />
+    <dropdown-edit label="Title" item="{{owner.name.title}}" value="{{owner.name.title}}" key="title" options="{{options}}"></dropdown-edit>
+    <input name="title" type="hidden" value="[[owner.name.title]]" />
     <paper-input name="ownerFirstName" label="First Name" value="{{owner.name.firstName}}"></paper-input>
     <paper-input name="ownerLastName" label="Last Name" value="{{owner.name.lastName}}"></paper-input>
 
-    <paper-dropdown-menu label="Owner Vocation" selected-item="{{ownerVocation}}" selected-item-label="{{selectedOwnerVocation}}">
-      <paper-listbox slot="dropdown-content" selected="[[__indexOf(owner.vocation, 'ownerVocation', options)]]">
-        <template is="dom-repeat" items="[[__getSortedOptions('ownerVocation', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <input name="ownerVocation" type="hidden" value$="[[ownerVocation.value]]" />
+    <dropdown-edit label="Vocation" item="{{owner.vocation}}" value="{{owner.vocation}}" key="vocation" options="{{options}}"></dropdown-edit>
+    <input name="ownerVocation" type="hidden" value="[[owner.vocation]]" />
 
   </template>
 

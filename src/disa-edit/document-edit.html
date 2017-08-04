@@ -7,6 +7,8 @@
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 
+<link rel="import" href="./dropdown-edit.html">
+
 <dom-module id="document-edit">
   <template>
     <style>
@@ -43,14 +45,8 @@
     <h2>Source Information</h2>
     <h3>Date of Document</h3>
     <paper-input name="year" label="Year" value="[[document.date.year]]"></paper-input>
-    <paper-dropdown-menu label="Month" selected-item="{{month}}" selected-item-label="{{selectedMonth}}">
-      <paper-listbox slot="dropdown-content" selected="[[__monthIndex(document.date.month)]]">
-        <template is="dom-repeat" items="[[__getOptions('month', options)]]">
-          <paper-item value="[[item]]">[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <input name="month" type="hidden" value$="[[month.value]]" />
+    <dropdown-edit label="Tribe" item="{{document.date.month}}" value="{{document.date.month}}" key="month" options="{{options}}"></dropdown-edit>
+    <input name="month" type="hidden" value="[[document.date.month]]" />
     <paper-input name="day" label="Day" value="[[document.date.day]]"></paper-input>
 
     <h3>Location</h3>

@@ -98,13 +98,13 @@
     <iron-form id="form">
       <form>
 
-        <person-edit id="person" person="[[entry.person]]" options="[[options]]"></person-edit>
+        <person-edit id="person" person="[[entry.person]]" options="{{options}}"></person-edit>
 
-        <owner-edit id="owner" owner="[[entry.owner]]" options="[[options]]"></owner-edit>
+        <owner-edit id="owner" owner="[[entry.owner]]" options="{{options}}"></owner-edit>
 
-        <misc-person-edit id="misc" entry="[[entry]]" options="[[options]]"></misc-person-edit>
+        <misc-person-edit id="misc" entry="[[entry]]" options="{{options}}"></misc-person-edit>
 
-        <document-edit id="document" document="[[entry.document]]" options="[[options]]"></document-edit> 
+        <document-edit id="document" document="[[entry.document]]" options="{{options}}"></document-edit> 
 
         <h2>Researcher Comments</h2>
         <paper-textarea id="ai" name="additionalInformation" label="Additional Information" value="[[entry.additionalInformation]]"></paper-textarea>

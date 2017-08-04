@@ -1,0 +1,89 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../utils.html">
+
+<dom-module id="dropdown-edit">
+  <template>
+    <style>
+      :host {
+        display: block;
+        font-family: 'Roboto', sans-serif;
+      }
+      
+      *:not(paper-button):not(paper-listbox) {
+        width: 100%;
+      }
+
+      paper-dropdown-menu[admin] {
+        width: calc(100% - 145px);
+      }
+
+      section#paper-input[admin] {
+        margin-right: -145px;
+        display: inline-block;
+        padding-right: 145px;
+        width: calc(100% - 145px);
+      }
+
+      section.hidden#paper-input[admin] {
+        display: none;
+      }
+
+      paper-dropdown-menu {
+        --paper-dropdown-menu-button: {
+          left: 0;
+          width: 100%;
+        }
+      }
+
+      paper-listbox {
+        --paper-listbox: {
+          width: 300px;
+          overflow: hidden;
+        }
+      }
+
+      iron-dropdown {
+        left:0 !important;
+        width:100% !important;
+      }
+
+      .hidden {
+        display: none;
+      }
+      
+    </style>
+    <section>
+      <paper-dropdown-menu admin$="[[__isAdmin()]]" label="[[label]]" selected-item="{{selectedItem}}">
+        <paper-listbox slot="dropdown-content" selected="[[__indexOf(value, key, options)]]">
+          <template is="dom-repeat" items="[[__getSortedOptions(key, options)]]">
+            <paper-item value="[[item]]">[[item]]</paper-item>
+          </template>
+        </paper-listbox>
+      </paper-dropdown-menu>
+      <section admin$="[[__isAdmin()]]" class="hidden" id="paper-input">
+        <paper-input label="[[label]]" value="{{value}}"></paper-input>
+      </section>
+      <template is="dom-if" if="[[__isAdmin()]]">
+        <paper-button class="start" raised on-click="__addOption">Add Option</paper-button>
+      </template>
+      <section class="hidden">
+        Current options:<br>
+        <template is="dom-repeat" items="[[__getSortedOptions(key, options)]]">
+          [[item]]<br>
+        </template>
+      </section>
+    </section>
+    <slot></slot>
+  </template>
+
+  <script src="dropdown-edit.js"></script>
+</dom-module>
