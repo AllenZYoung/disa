@@ -64,7 +64,7 @@
     <section>
       <paper-dropdown-menu admin$="[[__isAdmin()]]" label="[[label]]" selected-item="{{selectedItem}}">
         <paper-listbox slot="dropdown-content" selected="[[__indexOf(value, key, options)]]">
-          <template is="dom-repeat" items="[[__getSortedOptions(key, options)]]">
+          <template is="dom-repeat" items="[[__getSortedOptions(key, options, sort)]]">
             <paper-item value="[[item]]">[[item]]</paper-item>
           </template>
         </paper-listbox>
@@ -77,7 +77,7 @@
       </template>
       <section class="hidden">
         Current options:<br>
-        <template is="dom-repeat" items="[[__getSortedOptions(key, options)]]">
+        <template is="dom-repeat" items="[[__getSortedOptions(key, options, sor)]]">
           [[item]]<br>
         </template>
       </section>

@@ -15,7 +15,8 @@ class DropdownEdit extends Polymer.Element {
       options: {
         type: Array,
         notify: true
-      }
+      },
+      sort: Boolean
     };
   }
 
@@ -116,8 +117,8 @@ class DropdownEdit extends Polymer.Element {
     return Utils.__getOptions(key, options);
   }
 
-  __getSortedOptions(key, options) {
-    return Utils.__getSortedOptions(key, options);
+  __getSortedOptions(key, options, sort) {
+    return sort ? Utils.__getSortedOptions(key, options) : this.__getOptions(key, options);
   }
 
   __indexOf(value, key, options) {
