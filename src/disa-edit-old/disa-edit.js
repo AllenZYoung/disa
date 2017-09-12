@@ -170,7 +170,7 @@ class DisaEdit extends Polymer.Element {
       self.setProperties({
         body: body,
         method: self.entryId == 'new' ? 'POST' : 'PUT',
-        url: `http://api.disa.forkinthecode.com:8080/entries`
+        url: `http://api.disa.forkinthecode.com/entries`
       });
       // reset the id to clear out the two-way data binding on the names
       // self.set('entryId', undefined);
@@ -187,7 +187,7 @@ class DisaEdit extends Polymer.Element {
       this.set('entry', {});
       return '';
     }
-    return `http://api.disa.forkinthecode.com:8080/entries/${entryId}`;
+    return `http://api.disa.forkinthecode.com/entries/${entryId}`;
   }
 
   __header(entryId, entry) {

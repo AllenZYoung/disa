@@ -32,7 +32,7 @@ class DisaMain extends Polymer.Element {
     let self = this;
     
     // defaults
-    this.set('apiHost', "http://api.disa.forkinthecode.com:8080");
+    this.set('apiHost', "http://api.disa.forkinthecode.com");
 
     // event listeners
     this.addEventListener('sign-in', function(e) {
@@ -252,7 +252,7 @@ window.customElements.define(DisaMain.is, DisaMain);
 function onSignIn(googleUser) {
   let id_token = googleUser.getAuthResponse().id_token;
   let xhr = new XMLHttpRequest();
-  xhr.open('POST', `http://api.disa.forkinthecode.com:8080/signin`);
+  xhr.open('POST', `http://api.disa.forkinthecode.com/signin`);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onload = function() {
     let response = JSON.parse(xhr.responseText);

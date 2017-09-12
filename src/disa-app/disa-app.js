@@ -168,7 +168,7 @@ function onSignIn(googleUser) {
   if (!sessionStorage.getItem("jsession")) {
     console.log("calling new token");
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://api.disa.forkinthecode.com:8080:8080/newtoken');
+    xhr.open('POST', 'http://api.disa.forkinthecode.com/newtoken');
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function() {
       console.log("nt response");

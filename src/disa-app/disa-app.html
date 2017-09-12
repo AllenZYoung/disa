@@ -120,7 +120,7 @@
 
     <iron-ajax
       id="draft"
-      url="http://api.disa.forkinthecode.com:8080/entries/draft"
+      url="http://api.disa.forkinthecode.com/entries/draft"
       params='{{session}}'
       handle-as="json"
       last-response="{{draftEntries}}"
@@ -130,7 +130,7 @@
     <iron-ajax
       id="internal"
       auto
-      url="http://api.disa.forkinthecode.com:8080/entries/internal"
+      url="http://api.disa.forkinthecode.com/entries/internal"
       handle-as="json"
       last-response="{{internalEntries}}"
       debounce-duration="300">
@@ -139,7 +139,7 @@
     <iron-ajax
       id="public"
       auto
-      url="http://api.disa.forkinthecode.com:8080/entries/public"
+      url="http://api.disa.forkinthecode.com/entries/public"
       handle-as="json"
       last-response="{{publicEntries}}"
       debounce-duration="300">
@@ -147,7 +147,7 @@
 
     <iron-ajax
       auto
-      url="http://api.disa.forkinthecode.com:8080/options"
+      url="http://api.disa.forkinthecode.com/options"
       handle-as="json"
       last-response="{{optionsArray}}"
       debounce-duration="0">
@@ -157,7 +157,7 @@
       id="users"
       auto
       method="GET"
-      url="http://api.disa.forkinthecode.com:8080/users"
+      url="http://api.disa.forkinthecode.com/users"
       handle-as="json"
       content-type="application/json"
       last-response="{{users}}"
