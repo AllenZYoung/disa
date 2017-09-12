@@ -7,6 +7,9 @@ class PersonEdit extends Polymer.Element {
       person: {
         type: Object
       },
+      owner: {
+        type: Object
+      },
       options: {
         type: Array,
         notify: true

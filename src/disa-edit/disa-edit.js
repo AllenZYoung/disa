@@ -130,7 +130,7 @@ class DisaEdit extends Polymer.Element {
     body.person = person;
     this.$.person.resetDropdown();
 
-    let owner = this.$.owner.createFromData(formData);
+    let owner = this.$.person.$.owner.createFromData(formData);
     body.owner = owner;
 
     let [dateOfRunaway, dateOfEmancipation, buyer, seller, dateOfSale, dateOfMarriage] = this.$.misc.createFromData(formData);
@@ -176,6 +176,8 @@ class DisaEdit extends Polymer.Element {
     //   body._id = self.entryId;
     // }
     body.meta = meta;
+
+    console.log(body)
 
     this.setProperties({
       saveBody: body,

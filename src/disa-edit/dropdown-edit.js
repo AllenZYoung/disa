@@ -16,7 +16,10 @@ class DropdownEdit extends Polymer.Element {
         type: Array,
         notify: true
       },
-      sort: Boolean
+      sort: {
+        type: String,
+        value: "alphabetical"
+      }
     };
   }
 
@@ -118,11 +121,27 @@ class DropdownEdit extends Polymer.Element {
   }
 
   __getSortedOptions(key, options, sort) {
-    return sort ? Utils.__getSortedOptions(key, options) : this.__getOptions(key, options);
+    if (!sort) sort = "none";
+    switch (sort) {
+      case "alphabetical":
+        return Utils.__getSortedOptions(key, options);
+        break;
+      case "date":
+      case "none":
+        return this.__getOptions(key, options);
+        break;
+      default:
+        return [];
+        break;
+    }
   }
 
   __indexOf(value, key, options) {
-    return this.__getSortedOptions(key, options).indexOf(value);
+    if (typeof value == "number") {
+      return value - 1;
+    } else {
+      return this.__getSortedOptions(key, options, this.sort).indexOf(value);
+    }
   }
 }
 

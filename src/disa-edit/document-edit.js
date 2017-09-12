@@ -4,7 +4,7 @@ class DocumentEdit extends Polymer.Element {
 
   static get properties() {
     return {
-      owner: {
+      document: {
         type: Object
       }
     };
@@ -27,8 +27,8 @@ class DocumentEdit extends Polymer.Element {
     return Utils.__getOptions(key, options);
   }
 
-  __getSortedOptions(key, options) {
-    return Utils.__getSortedOptions(key, options);
+  __getSortedOptions(key, options, noSort) {
+    return noSort ? this.__getOptions(key, options) : Utils.__getSortedOptions(key, options);
   }
 
   __indexOf(value, key, options) {
