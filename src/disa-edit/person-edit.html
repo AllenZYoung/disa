@@ -45,7 +45,15 @@
       .hidden {
         display: none;
       }
-      
+
+      .arrow {
+        float: right;
+        width: 30px;
+      }
+
+      .arrow.open {
+        transform: rotate(180deg);
+      }
 
     </style>
 
@@ -65,94 +73,95 @@
     <p><paper-button raised on-click="addName">Add Name</paper-button></p>
     <br>
 
-    <h3>Biographical</h3>
-    <dropdown-edit label="Tribe" item="{{person.tribe}}" value="{{person.tribe}}" key="tribe" options="{{options}}"></dropdown-edit>
-    <input name="tribe" type="hidden" value="[[person.tribe]]" />
-    <br>
+    <h3>Biographical <img class="arrow" src="http://www.pngmart.com/files/3/Down-Arrow-PNG-File.png" /></h3>
+    <div class="dropdown hidden">
+      <dropdown-edit label="Tribe" item="{{person.tribe}}" value="{{person.tribe}}" key="tribe" options="{{options}}"></dropdown-edit>
+      <input name="tribe" type="hidden" value="[[person.tribe]]" />
+      <br>
 
-    <dropdown-edit label="Origin" item="{{person.origin}}" value="{{person.origin}}" key="origin" options="{{options}}"></dropdown-edit>
-    <input name="origin" type="hidden" value="[[person.origin]]" />
-    <br>
+      <dropdown-edit label="Origin" item="{{person.origin}}" value="{{person.origin}}" key="origin" options="{{options}}"></dropdown-edit>
+      <input name="origin" type="hidden" value="[[person.origin]]" />
+      <br>
 
-    <dropdown-edit label="Race" item="{{person.race}}" value="{{person.race}}" key="race" options="{{options}}"></dropdown-edit>
-    <input name="race" type="hidden" value="[[person.race]]" />
+      <dropdown-edit label="Race" item="{{person.race}}" value="{{person.race}}" key="race" options="{{options}}"></dropdown-edit>
+      <input name="race" type="hidden" value="[[person.race]]" />
 
-    <dropdown-edit label="Sex" item="{{person.sex}}" value="{{person.sex}}" key="sex" options="{{options}}"></dropdown-edit>
-    <input name="sex" type="hidden" value="[[person.sex]]" />
+      <dropdown-edit label="Sex" item="{{person.sex}}" value="{{person.sex}}" key="sex" options="{{options}}"></dropdown-edit>
+      <input name="sex" type="hidden" value="[[person.sex]]" />
 
-    <paper-input name="age" label="Age" value="[[person.age]]"></paper-input>
+      <paper-input name="age" label="Age" value="[[person.age]]"></paper-input>
 
-    <dropdown-edit label="Vocation" item="{{person.vocation}}" value="{{person.vocation}}" key="vocation" options="{{options}}"></dropdown-edit>
-    <input name="vocation" type="hidden" value="[[person.vocation]]" />
+      <dropdown-edit label="Vocation" item="{{person.vocation}}" value="{{person.vocation}}" key="vocation" options="{{options}}"></dropdown-edit>
+      <input name="vocation" type="hidden" value="[[person.vocation]]" />
 
-    <dropdown-edit label="Type/Kind of Enslavement" item="{{person.typeKindOfEnslavement}}" value="{{person.typeKindOfEnslavement}}" key="typeKindOfEnslavement" options="{{options}}"></dropdown-edit>
-    <input name="typeKindOfEnslavement" type="hidden" value="[[person.typeKindOfEnslavement]]" />
+      <dropdown-edit label="Type/Kind of Enslavement" item="{{person.typeKindOfEnslavement}}" value="{{person.typeKindOfEnslavement}}" key="typeKindOfEnslavement" options="{{options}}"></dropdown-edit>
+      <input name="typeKindOfEnslavement" type="hidden" value="[[person.typeKindOfEnslavement]]" />
 
-    <owner-edit id="owner" owner="[[owner]]" options="{{options}}"></owner-edit>
+      <owner-edit id="owner" owner="[[owner]]" options="{{options}}"></owner-edit>
 
-    <h3>Father</h3>
-    <paper-input name="fatherFirstName" label="First Name" value="{{person.father.name.firstName}}"></paper-input>
-    <paper-input name="fatherLastName" label="Last Name" value="{{person.father.name.lastName}}"></paper-input>
+    </div>
+      <h3>Father <img class="arrow" src="http://www.pngmart.com/files/3/Down-Arrow-PNG-File.png" /></h3>
+      <div class="dropdown hidden">
+        <paper-input name="fatherFirstName" label="First Name" value="{{person.father.name.firstName}}"></paper-input>
+        <paper-input name="fatherLastName" label="Last Name" value="{{person.father.name.lastName}}"></paper-input>
+        
+        <dropdown-edit label="Origin" item="{{person.father.origin}}" value="{{person.father.origin}}" key="origin" options="{{options}}"></dropdown-edit>
+        <input name="fatherOrigin" type="hidden" value="[[person.father.origin]]" />
 
-    <dropdown-edit label="Origin" item="{{person.father.origin}}" value="{{person.father.origin}}" key="origin" options="{{options}}"></dropdown-edit>
-    <input name="fatherOrigin" type="hidden" value="[[person.father.origin]]" />
+        <dropdown-edit label="Race" item="{{person.father.race}}" value="{{person.father.race}}" key="race" options="{{options}}"></dropdown-edit>
+        <input name="fatherRace" type="hidden" value="[[person.father.race]]" />
 
-    <dropdown-edit label="Race" item="{{person.father.race}}" value="{{person.father.race}}" key="race" options="{{options}}"></dropdown-edit>
-    <input name="fatherRace" type="hidden" value="[[person.father.race]]" />
+        <dropdown-edit label="Status" item="{{person.father.status}}" value="{{person.father.status}}" key="status" options="{{options}}"></dropdown-edit>
+        <input name="fatherStatus" type="hidden" value="[[person.father.status]]" />
 
-    <dropdown-edit label="Status" item="{{person.father.status}}" value="{{person.father.status}}" key="status" options="{{options}}"></dropdown-edit>
-    <input name="fatherStatus" type="hidden" value="[[person.father.status]]" />
+        <h4>Father's Owner</h4>
+        <dropdown-edit label="Title" item="{{person.father.owner.name.title}}" value="{{person.father.owner.name.title}}" key="title" options="{{options}}"></dropdown-edit>
+        <input name="fatherOwnerTitle" type="hidden" value="[[person.father.owner.name.title]]" />
+        <paper-input name="fatherOwnerFirstName" label="First Name" value="{{person.father.owner.name.firstName}}"></paper-input>
+        <paper-input name="fatherOwnerLastName" label="Last Name" value="{{person.father.owner.name.lastName}}"></paper-input>
 
-    <h4>Father's Owner</h4>
-    <dropdown-edit label="Title" item="{{person.father.owner.name.title}}" value="{{person.father.owner.name.title}}" key="title" options="{{options}}"></dropdown-edit>
-    <input name="fatherOwnerTitle" type="hidden" value="[[person.father.owner.name.title]]" />
-    <paper-input name="fatherOwnerFirstName" label="First Name" value="{{person.father.owner.name.firstName}}"></paper-input>
-    <paper-input name="fatherOwnerLastName" label="Last Name" value="{{person.father.owner.name.lastName}}"></paper-input>
+        <dropdown-edit label="Owner Vocation" item="{{person.father.owner.vocation}}" value="{{person.father.owner.vocation}}" key="ownerVocation" options="{{options}}"></dropdown-edit>
+        <input name="fatherOwnerVocation" type="hidden" value="[[person.father.owner.vocation]]" />
+      </div>
+      <h3>Mother <img class="arrow" src="http://www.pngmart.com/files/3/Down-Arrow-PNG-File.png" /></h3>
+      <div class="dropdown hidden">
+        <paper-input name="motherFirstName" label="First Name" value="{{person.mother.name.firstName}}"></paper-input>
+        <paper-input name="motherLastName" label="Last Name" value="{{person.mother.name.lastName}}"></paper-input>
 
-    <dropdown-edit label="Owner Vocation" item="{{person.father.owner.vocation}}" value="{{person.father.owner.vocation}}" key="ownerVocation" options="{{options}}"></dropdown-edit>
-    <input name="fatherOwnerVocation" type="hidden" value="[[person.father.owner.vocation]]" />
+        <dropdown-edit label="Origin" item="{{person.mother.origin}}" value="{{person.mother.origin}}" key="origin" options="{{options}}"></dropdown-edit>
+        <input name="motherOrigin" type="hidden" value="[[person.mother.origin]]" />
 
-    <h3>Mother</h3>
-    <paper-input name="motherFirstName" label="First Name" value="{{person.mother.name.firstName}}"></paper-input>
-    <paper-input name="motherLastName" label="Last Name" value="{{person.mother.name.lastName}}"></paper-input>
+        <dropdown-edit label="Race" item="{{person.mother.race}}" value="{{person.mother.race}}" key="race" options="{{options}}"></dropdown-edit>
+        <input name="motherRace" type="hidden" value="[[person.mother.race]]" />
 
-    <dropdown-edit label="Origin" item="{{person.mother.origin}}" value="{{person.mother.origin}}" key="origin" options="{{options}}"></dropdown-edit>
-    <input name="motherOrigin" type="hidden" value="[[person.mother.origin]]" />
+        <dropdown-edit label="Status" item="{{person.mother.status}}" value="{{person.mother.status}}" key="status" options="{{options}}"></dropdown-edit>
+        <input name="motherStatus" type="hidden" value="[[person.mother.status]]" />
+        
+        <h4>Mother's Owner</h4>
+        <dropdown-edit label="Title" item="{{person.mother.owner.name.title}}" value="{{person.mother.owner.name.title}}" key="title" options="{{options}}"></dropdown-edit>
+        <input name="motherOwnerTitle" type="hidden" value="[[person.mother.owner.name.title]]" />
+        <paper-input name="motherOwnerFirstName" label="First Name" value="{{person.mother.owner.name.firstName}}"></paper-input>
+        <paper-input name="motherOwnerLastName" label="Last Name" value="{{person.mother.owner.name.lastName}}"></paper-input>
 
-    <dropdown-edit label="Race" item="{{person.mother.race}}" value="{{person.mother.race}}" key="race" options="{{options}}"></dropdown-edit>
-    <input name="motherRace" type="hidden" value="[[person.mother.race]]" />
-
-    <dropdown-edit label="Status" item="{{person.mother.status}}" value="{{person.mother.status}}" key="status" options="{{options}}"></dropdown-edit>
-    <input name="motherStatus" type="hidden" value="[[person.mother.status]]" />
-    
-    <h4>Mother's Owner</h4>
-    <dropdown-edit label="Title" item="{{person.mother.owner.name.title}}" value="{{person.mother.owner.name.title}}" key="title" options="{{options}}"></dropdown-edit>
-    <input name="motherOwnerTitle" type="hidden" value="[[person.mother.owner.name.title]]" />
-    <paper-input name="motherOwnerFirstName" label="First Name" value="{{person.mother.owner.name.firstName}}"></paper-input>
-    <paper-input name="motherOwnerLastName" label="Last Name" value="{{person.mother.owner.name.lastName}}"></paper-input>
-
-    <dropdown-edit label="Owner Vocation" item="{{person.mother.owner.vocation}}" value="{{person.mother.owner.vocation}}" key="ownerVocation" options="{{options}}"></dropdown-edit>
-    <input name="motherOwnerVocation" type="hidden" value="[[person.mother.owner.vocation]]" />
-
-    <h3>Children</h3>
-    <template is="dom-repeat" items="[[person.children]]">
-      <paper-input name="childFirstName[]" label="First Name" value="{{item.name.firstName}}"></paper-input>
-      <paper-input name="childLastName[]" label="Last Name" value="{{item.name.lastName}}"></paper-input>
-      <paper-button on-click="removeChild" data-property="children" data-index="[[index]]" raised>Remove Child</paper-button>
-    </template>
-    <p><paper-button raised on-click="addChild">Add Child</paper-button></p>
-    <br>
-
-    <!-- this.vocation = "";
-    this.stringLocation = "";
-    this.colonyState = "";
-    this.nationalContext = "";
-
-    this.father = new Parent();
-    this.mother = new Parent();
-    this.children = []; -->
-
+        <dropdown-edit label="Owner Vocation" item="{{person.mother.owner.vocation}}" value="{{person.mother.owner.vocation}}" key="ownerVocation" options="{{options}}"></dropdown-edit>
+        <input name="motherOwnerVocation" type="hidden" value="[[person.mother.owner.vocation]]" />
+      </div>
+      <h3>Children <img class="arrow" src="http://www.pngmart.com/files/3/Down-Arrow-PNG-File.png" /></h3>
+      <div class="hidden">
+        <template is="dom-repeat" items="[[person.children]]">
+          <paper-input name="childFirstName[]" label="First Name" value="{{item.name.firstName}}"></paper-input>
+          <paper-input name="childLastName[]" label="Last Name" value="{{item.name.lastName}}"></paper-input>
+          <paper-button on-click="removeChild" data-property="children" data-index="[[index]]" raised>Remove Child</paper-button>
+        </template>
+        <p><paper-button raised on-click="addChild">Add Child</paper-button></p>
+      </div>
+      <br>
+    </div>
   </template>
+
+  <script>
+  
+  </script>
 
   <script src="person-edit.js"></script>
 </dom-module>

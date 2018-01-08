@@ -21,6 +21,12 @@ class MiscPersonEdit extends Polymer.Element {
   
   connectedCallback() {
     super.connectedCallback();
+    for (let el of this.shadowRoot.querySelectorAll(".arrow")) {
+      el.addEventListener('click', (e) => {
+        el.classList.toggle("open");
+        el.parentElement.nextElementSibling.classList.toggle("hidden");
+      });
+    }
   }
 
   __getOptions(key, options) {

@@ -38,11 +38,25 @@
         left:0 !important;
         width:100% !important;
       }
+
+      .hidden {
+        display: none;
+      }
+
+      .arrow {
+        float: right;
+        width: 30px;
+      }
+
+      .arrow.open {
+        transform: rotate(180deg);
+      }
       
 
     </style>
 
-    <h3>End of Enslavement</h3>
+    <h3>End of Enslavement <img class="arrow" src="http://www.pngmart.com/files/3/Down-Arrow-PNG-File.png" /></h3>
+    <div class="hidden">
     <h4>Date of Runaway</h4>
     <paper-input name="dateOfRunawayYear" label="Year" value="[[entry.dateOfRunaway.year]]"></paper-input>
     <dropdown-edit label="Month" item="{{entry.dateOfRunaway.month}}" value="{{entry.dateOfRunaway.month}}" key="month" options="{{options}}" sort="date"></dropdown-edit>
@@ -68,13 +82,15 @@
     <dropdown-edit label="Month" item="{{entry.dateOfSale.month}}" value="{{entry.dateOfSale.month}}" key="month" options="{{options}}" sort="date"></dropdown-edit>
     <input name="dateOfSaleMonth" type="hidden" value="[[entry.dateOfSale.month]]" />
     <paper-input name="dateOfSaleDay" label="Day" value="[[entry.dateOfSale.day]]"></paper-input>
-
+    </div>
     <!-- <h3></h3> -->
-    <h3>Date of Marriage</h3>
-    <paper-input name="dateOfMarriageYear" label="Year" value="[[entry.dateOfMarriage.year]]"></paper-input>
-    <dropdown-edit label="Month" item="{{entry.dateOfMarriage.month}}" value="{{entry.dateOfMarriage.month}}" key="month" options="{{options}}" sort="date"></dropdown-edit>
-    <input name="dateOfMarriageMonth" type="hidden" value="[[entry.dateOfMarriage.month]]" />
-    <paper-input name="dateOfMarriageDay" label="Day" value="[[entry.dateOfMarriage.day]]"></paper-input>
+    <h3>Date of Marriage <img class="arrow" src="http://www.pngmart.com/files/3/Down-Arrow-PNG-File.png" /></h3>
+    <div class="hidden">
+      <paper-input name="dateOfMarriageYear" label="Year" value="[[entry.dateOfMarriage.year]]"></paper-input>
+      <dropdown-edit label="Month" item="{{entry.dateOfMarriage.month}}" value="{{entry.dateOfMarriage.month}}" key="month" options="{{options}}" sort="date"></dropdown-edit>
+      <input name="dateOfMarriageMonth" type="hidden" value="[[entry.dateOfMarriage.month]]" />
+      <paper-input name="dateOfMarriageDay" label="Day" value="[[entry.dateOfMarriage.day]]"></paper-input>
+    </div>
 
   </template>
 
