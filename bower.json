@@ -11,7 +11,7 @@
     "paper-input": "PolymerElements/paper-input#^2.0.1",
     "iron-form": "PolymerElements/iron-form#^2.0.0",
     "paper-button": "PolymerElements/paper-button#^2.0.0",
-    "iron-autogrow-textarea": "PolymerElements/iron-autogrow-textarea#^2.0.0",
+    "iron-autogrow-textarea": "PolymerElements/iron-autogrow-textarea#2.1.0",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.0.0",
     "web-animations-js": "^2.2.5",
     "paper-item": "PolymerElements/paper-item#^2.0.0",
