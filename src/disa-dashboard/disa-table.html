@@ -89,6 +89,13 @@
       </vaadin-grid-column>
 
       <vaadin-grid-column>
+        <template class="header"><vaadin-grid-sorter path="person.tribe">Nation</vaadin-grid-sorter></template>
+        <template>
+          <a href="#/edit/[[item._id]]" class="clickable-blank"><span>[[item.person.tribe]]</span></a>
+        </template>
+      </vaadin-grid-column>
+
+      <vaadin-grid-column>
         <template class="header"><vaadin-grid-sorter path="meta.lastModified">Last Modified</vaadin-grid-sorter></template>
         <template>
           <a href="#/edit/[[item._id]]" class="clickable-blank"><span>[[_toLocaleString(item.meta.lastModified)]]</span></a>

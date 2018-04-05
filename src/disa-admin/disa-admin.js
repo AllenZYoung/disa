@@ -54,7 +54,7 @@ class DisaAdmin extends Polymer.Element {
       case "nameType":
         return "Name Type";
       case "tribe":
-        return "Tribe";
+        return "Nation";
       case "origin":
         return "Origin";
       case "race":
