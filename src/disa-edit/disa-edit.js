@@ -133,11 +133,12 @@ class DisaEdit extends Polymer.Element {
     let owner = this.$.person.$.owner.createFromData(formData);
     body.owner = owner;
 
-    let [dateOfRunaway, dateOfEmancipation, buyer, seller, dateOfSale, dateOfMarriage] = this.$.misc.createFromData(formData);
+    let [dateOfRunaway, dateOfEmancipation, buyer, seller, dateOfSale, dateOfMarriage, dateOfDeath] = this.$.misc.createFromData(formData);
     body.dateOfRunaway = dateOfRunaway;
     body.dateOfEmancipation = dateOfEmancipation;
     body.dateOfSale = dateOfSale;
     body.dateOfMarriage = dateOfMarriage;
+    body.dateOfDeath = dateOfDeath;
     body.buyer = buyer;
     body.seller = seller;
 
