@@ -92,6 +92,14 @@
       <paper-input name="dateOfMarriageDay" label="Day" value="[[entry.dateOfMarriage.day]]"></paper-input>
     </div>
 
+    <h3>Date of Death <img class="arrow" src="http://www.pngmart.com/files/3/Down-Arrow-PNG-File.png" /></h3>
+    <div class="hidden">
+      <paper-input name="dateOfDeathYear" label="Year" value="[[entry.dateOfDeath.year]]"></paper-input>
+      <dropdown-edit label="Month" item="{{entry.dateOfDeath.month}}" value="{{entry.dateOfDeath.month}}" key="month" options="{{options}}" sort="date"></dropdown-edit>
+      <input name="dateOfDeathMonth" type="hidden" value="[[entry.dateOfDeath.month]]" />
+      <paper-input name="dateOfDeathDay" label="Day" value="[[entry.dateOfDeath.day]]"></paper-input>
+    </div>
+
   </template>
 
   <script src="misc-person-edit.js"></script>

@@ -94,7 +94,17 @@ class MiscPersonEdit extends Polymer.Element {
     dateOfMarriage.month = (new Date(`1 ${dateOfMarriageMonth} 9999`).getMonth() + 1) || '';
     dateOfMarriage.day = dateOfMarriageDay;
 
-    return [dateOfRunaway, dateOfEmancipation, buyer, seller, dateOfSale, dateOfMarriage];
+    let dateOfDeath = new TriplePartDate();
+
+    let dateOfDeathYear = formData['dateOfDeathYear'];
+    let dateOfDeathMonth = formData['dateOfDeathMonth'];
+    let dateOfDeathDay = formData['dateOfDeathDay'];
+
+    dateOfDeath.year = dateOfDeathYear;
+    dateOfDeath.month = (new Date(`1 ${dateOfDeathMonth} 9999`).getMonth() + 1) || '';
+    dateOfDeath.day = dateOfDeathDay;
+
+    return [dateOfRunaway, dateOfEmancipation, buyer, seller, dateOfSale, dateOfMarriage, dateOfDeath];
   }
 }
 
