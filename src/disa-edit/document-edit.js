@@ -54,9 +54,11 @@ class DocumentEdit extends Polymer.Element {
 
     document.date = date;
 
+    let locale = formDate['locale'];
     let stringLocation = formData['stringLocation'];
     let colonyState = formData['colonyState'];
     let nationalContext = formData['nationalContext'];
+    document.locale = locale;
     document.stringLocation = stringLocation;
     document.colonyState = colonyState;
     document.nationalContext = nationalContext;
