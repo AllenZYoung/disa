@@ -65,8 +65,8 @@
         <paper-input name="firstName[]" label="First Name" value="{{item.firstName}}"></paper-input>
         <paper-input name="lastName[]" label="Last Name" value="{{item.lastName}}"></paper-input>
         <dropdown-edit label="Type" item="{{item.type}}" value="{{item.type}}" key="nameType" options="{{options}}"></dropdown-edit>
-        <paper-button on-click="removeName" data-property="names" data-index="[[index]]" raised>Remove Name</paper-button>
         <input type="hidden" name="nameType[]" value="[[item.type]]"></input>
+        <paper-button on-click="removeName" data-property="names" data-index="[[index]]" raised>Remove Name</paper-button>
       </section>
       <hr />
     </template>
